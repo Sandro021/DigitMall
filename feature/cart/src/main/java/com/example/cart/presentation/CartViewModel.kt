@@ -1,0 +1,95 @@
+package com.example.cart.presentation
+
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.cart.domain.usecase.GetCartItemUseCase
+import com.example.cart.domain.usecase.RemoveFromCartUseCase
+import com.example.cart.presentation.contract.CartIntent
+import com.example.cart.presentation.contract.CartState
+import com.example.cart.presentation.mapper.toUiList
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CartViewModel @Inject constructor(
+    private val getCartItemsUseCase: GetCartItemUseCase,
+    private val removeFromCartUseCase: RemoveFromCartUseCase
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(CartState())
+    val state = _state.asStateFlow()
+
+    private val currentUserId = "temp_user_1"
+
+    init {
+        handleIntent(CartIntent.LoadCart)
+    }
+
+    fun handleIntent(intent: CartIntent) {
+        when (intent) {
+            is CartIntent.LoadCart -> loadCartItems()
+            is CartIntent.RemoveItem -> deleteItem(intent.id)
+        }
+    }
+
+    private fun loadCartItems() {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+
+            getCartItemsUseCase(currentUserId)
+                .onSuccess { items ->
+
+                    val total = items.sumOf {
+                        (it.price.toDoubleOrNull() ?: 0.0) * it.quantity
+                    }
+
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            cartItems = items.toUiList(),
+                            totalPrice = total
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _state.update { it.copy(isLoading = false, error = error.message) }
+                }
+        }
+    }
+
+    private fun deleteItem(cartItemId: String) {
+        viewModelScope.launch {
+
+            val currentList = _state.value.cartItems
+            val updatedList = currentList.filter { it.id != cartItemId }
+
+
+            val newTotal = updatedList.sumOf {
+                (it.singlePriceDisplay.toDoubleOrNull() ?: 0.0) * it.quantity
+            }
+
+            _state.update {
+                it.copy(cartItems = updatedList, totalPrice = newTotal)
+            }
+
+
+            removeFromCartUseCase(cartItemId)
+                .onFailure {
+
+                    _state.update {
+                        it.copy(
+                            cartItems = currentList,
+                            error = "Failed to delete item"
+                        )
+                    }
+
+                    loadCartItems()
+                }
+        }
+    }
+}
