@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 
 
 private val LightMallColors = MallColors(
-    brandPrimary = Color(0xFF2A4BA0),
+    brandPrimary = Color(0xFF243654),
     onBrandPrimary = Color(0xFFFFFFFF), // White text on Blue button
     brandSecondary = Color(0xFFFF6E40),
     specialPromo = Color(0xFFF9B023),
@@ -27,14 +27,14 @@ private val LightMallColors = MallColors(
 )
 
 private val DarkMallColors = MallColors(
-    brandPrimary = Color(0xFF5E81F4),   // Lighter blue for dark mode
+    brandPrimary = Color(0xFFF8F9FB),   // Lighter blue for dark mode
     onBrandPrimary = Color(0xFF000000), // Black text on Light Blue button
     brandSecondary = Color(0xFFFF8A65),
     specialPromo = Color(0xFFFFD54F),
     textPrimary = Color(0xFFEEEEEE),    // High contrast white
     textSecondary = Color(0xFFB0B3B8),  // Light grey for subtitles
-    background = Color(0xFF121212),     // Standard Dark Mode Black
-    surface = Color(0xFF1E1E1E),        // Lighter grey for Cards (CRITICAL FIX)
+    background = Color(0xFF243654),     // Standard Dark Mode Black
+    surface = Color(0xFF243654),        // Lighter grey for Cards (CRITICAL FIX)
     success = Color(0xFF69F0AE),
     warning = Color(0xFFFFD180),
     error = Color(0xFFEF5350)
