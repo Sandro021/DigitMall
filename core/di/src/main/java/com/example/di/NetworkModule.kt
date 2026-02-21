@@ -1,8 +1,9 @@
 package com.example.di
 
 
-
-
+import com.example.cart.data.remote.CartApiService
+import com.example.item_feed.data.remote.AllItemApiService
+import com.example.item_list.data.remote.ItemApiService
 import com.example.shop_feed.data.remote.ShopApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -10,7 +11,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonBuilder
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -44,21 +44,21 @@ object NetworkModule {
     @Singleton
     fun provideShopApiService(retrofit: Retrofit): ShopApiService =
         retrofit.create(ShopApiService::class.java)
-//
-//
-//    @Provides
-//    @Singleton
-//    fun provideItemApiService(retrofit: Retrofit): ItemApiService =
-//        retrofit.create(ItemApiService::class.java)
-//
-//    @Provides
-//    @Singleton
-//    fun provideCartApiService(retrofit: Retrofit): CartApiService =
-//        retrofit.create(CartApiService::class.java)
-//
-//    @Provides
-//    @Singleton
-//    fun provideAllItemApiService(retrofit: Retrofit): AllItemApiService =
-//        retrofit.create(AllItemApiService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideItemApiService(retrofit: Retrofit): ItemApiService =
+        retrofit.create(ItemApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCartApiService(retrofit: Retrofit): CartApiService =
+        retrofit.create(CartApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAllItemApiService(retrofit: Retrofit): AllItemApiService =
+        retrofit.create(AllItemApiService::class.java)
 
 }

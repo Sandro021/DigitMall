@@ -1,0 +1,116 @@
+package com.example.item_feed.presentation
+
+
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.item_feed.domain.model.Item
+import com.example.item_feed.domain.usecase.AddToCartUseCase
+import com.example.item_feed.domain.usecase.GetAllItemsUseCase
+import com.example.item_feed.presentation.contract.AllItemsIntent
+import com.example.item_feed.presentation.contract.AllItemsState
+import com.example.item_feed.presentation.mapper.toUiModel
+import com.example.item_feed.presentation.model.AllItemUi
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class AllItemsViewModel @Inject constructor(
+    private val getAllItemsUseCase: GetAllItemsUseCase,
+    private val addToCartUseCase: AddToCartUseCase
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(AllItemsState())
+    val state: StateFlow<AllItemsState> = _state.asStateFlow()
+
+    private var currentDomainItems: List<Item> = emptyList()
+
+    init {
+        handleIntent(AllItemsIntent.LoadItems)
+    }
+
+    fun handleIntent(intent: AllItemsIntent) {
+        when (intent) {
+            is AllItemsIntent.LoadItems -> fetchItems()
+
+            is AllItemsIntent.SelectCategory -> {
+                _state.update { it.copy(selectedCategory = intent.category) }
+                fetchItems()
+            }
+
+            is AllItemsIntent.ChangeSortOrder -> {
+                _state.update { it.copy(sortOrder = intent.sortOrder) }
+                fetchItems()
+            }
+
+            is AllItemsIntent.AddToCart -> {
+                addToCart(intent.item)
+            }
+
+            is AllItemsIntent.ClearCartMessage -> {
+                _state.update { it.copy(cartMessage = null) }
+            }
+        }
+    }
+
+    private fun fetchItems() {
+        viewModelScope.launch {
+            val currentState = _state.value
+            getAllItemsUseCase(
+                categoryFilter = currentState.selectedCategory,
+                sortOrder = currentState.sortOrder
+            )
+                .onStart { _state.update { it.copy(isLoading = true, error = null) } }
+                .catch { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
+                .collect { domainItems ->
+
+                    // NEW: Save the domain items to our local cache
+                    currentDomainItems = domainItems
+
+                    val uniqueCategories = domainItems.map { it.category }.distinct()
+                    val allCategories = listOf("All") + uniqueCategories
+
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            items = domainItems.map { item -> item.toUiModel() },
+                            categories = if (currentState.selectedCategory == "All") allCategories else it.categories
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun addToCart(uiItem: AllItemUi) {
+        viewModelScope.launch {
+            try {
+                // 1. Find the real Domain Item from our cache using the ID
+                val domainItem = currentDomainItems.find { it.id == uiItem.id }
+
+                if (domainItem != null) {
+                    // 2. Get the Firebase User ID
+                   // val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "temp_user_1"
+
+                    val userId = "temp_user_1"
+
+                    addToCartUseCase(item = domainItem, userId = userId)
+
+                    _state.update { it.copy(cartMessage = "Added ${uiItem.name} to cart!") }
+                } else {
+                    _state.update { it.copy(cartMessage = "Could not find item details.") }
+                }
+
+            } catch (e: Exception) {
+                _state.update { it.copy(cartMessage = "Failed to add to cart: ${e.message}") }
+            }
+        }
+    }
+}

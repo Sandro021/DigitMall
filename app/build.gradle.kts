@@ -67,4 +67,11 @@ dependencies {
     //navigation
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    implementation(projects.feature.shopFeed)
+    implementation(projects.core.di)
+    implementation(projects.core.ui)
+    implementation(projects.feature.itemList)
+    implementation(projects.feature.cart)
+    implementation(projects.feature.itemFeed)
 }
