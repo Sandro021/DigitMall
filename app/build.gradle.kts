@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -68,10 +70,21 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2")) // Or latest version
+
+    // 2. Add the SDKs you need.
+    // Notice how you DO NOT need to put version numbers here! The BoM handles it.
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
     implementation(projects.feature.shopFeed)
     implementation(projects.core.di)
     implementation(projects.core.ui)
     implementation(projects.feature.itemList)
     implementation(projects.feature.cart)
     implementation(projects.feature.itemFeed)
+    implementation(projects.feature.auth)
+
+
 }

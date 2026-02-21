@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "263872926806",
+    "project_id": "digitapp-d0085",
+    "storage_bucket": "digitapp-d0085.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263872926806:android:a2b47ec12d272483f757f7",
+        "android_client_info": {
+          "package_name": "com.example.digitmall"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2F_heDc50umOXss7w1Q_WcoQgF9B1Xso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

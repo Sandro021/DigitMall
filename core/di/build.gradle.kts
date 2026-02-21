@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     alias(libs.plugins.ksp)
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -55,10 +57,19 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("com.squareup.okio:okio:3.9.1")
 
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2")) // Or latest version
+
+    // 2. Add the SDKs you need.
+    // Notice how you DO NOT need to put version numbers here! The BoM handles it.
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
 
     implementation(projects.feature.shopFeed)
     implementation(projects.feature.cart)
     implementation(projects.feature.itemList)
     implementation(projects.feature.itemFeed)
+    implementation(projects.feature.auth)
 
 }

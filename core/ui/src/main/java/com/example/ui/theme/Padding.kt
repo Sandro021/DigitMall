@@ -14,6 +14,7 @@ object Padding {
     val padding30 = 30.dp
 
     val padding48 = 48.dp
+    val padding50 = 50.dp
 
     val padding60 = 60.dp
     val padding100 = 100.dp

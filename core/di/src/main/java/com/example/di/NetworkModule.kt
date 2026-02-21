@@ -1,10 +1,12 @@
 package com.example.di
 
 
+import com.example.auth.data.remote.service.ProfileApi
 import com.example.cart.data.remote.CartApiService
 import com.example.item_feed.data.remote.AllItemApiService
 import com.example.item_list.data.remote.ItemApiService
 import com.example.shop_feed.data.remote.ShopApiService
+import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -60,5 +62,13 @@ object NetworkModule {
     @Singleton
     fun provideAllItemApiService(retrofit: Retrofit): AllItemApiService =
         retrofit.create(AllItemApiService::class.java)
+
+    @Provides @Singleton
+    fun provideProfileApi(retrofit: Retrofit): ProfileApi =
+        retrofit.create(ProfileApi::class.java)
+
+    @Provides @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
 
 }
