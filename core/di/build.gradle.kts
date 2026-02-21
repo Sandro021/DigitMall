@@ -71,5 +71,6 @@ dependencies {
     implementation(projects.feature.itemList)
     implementation(projects.feature.itemFeed)
     implementation(projects.feature.auth)
+    implementation(projects.feature.feed)
 
 }

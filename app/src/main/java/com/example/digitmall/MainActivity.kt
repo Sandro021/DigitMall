@@ -16,6 +16,7 @@ import com.example.auth.presentation.registration.RegistrationScreen
 import com.example.auth.presentation.welcome.WelcomeScreen
 import com.example.digitmall.navigation.AppNavigation
 import com.example.digitmall.ui.theme.DigitMallTheme
+import com.example.feed.presentation.FeedScreen
 import com.example.ui.theme.MallTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +40,8 @@ class MainActivity : ComponentActivity() {
 //                RegistrationScreen(
 //                    onBack = {}
 //                ) { }
+
+                FeedScreen()
             }
         }
     }

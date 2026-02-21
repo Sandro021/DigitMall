@@ -85,6 +85,7 @@ dependencies {
     implementation(projects.feature.cart)
     implementation(projects.feature.itemFeed)
     implementation(projects.feature.auth)
+    implementation(projects.feature.feed)
 
 
 }

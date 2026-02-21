@@ -3,6 +3,7 @@ package com.example.di
 
 import com.example.auth.data.remote.service.ProfileApi
 import com.example.cart.data.remote.CartApiService
+import com.example.feed.data.remote.service.FeedApi
 import com.example.item_feed.data.remote.AllItemApiService
 import com.example.item_list.data.remote.ItemApiService
 import com.example.shop_feed.data.remote.ShopApiService
@@ -70,5 +71,8 @@ object NetworkModule {
     @Provides @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
+    @Provides @Singleton
+    fun provideFeedApi(retrofit: Retrofit): FeedApi =
+        retrofit.create(FeedApi::class.java)
 
 }
