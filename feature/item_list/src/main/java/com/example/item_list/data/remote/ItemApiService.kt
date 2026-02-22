@@ -11,5 +11,4 @@ interface ItemApiService {
     @GET("shops/{id}/items")
     suspend fun getItems(@Path("id") shopId: String): List<ItemDto>
 
-
 }

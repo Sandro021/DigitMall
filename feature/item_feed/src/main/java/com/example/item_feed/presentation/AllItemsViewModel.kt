@@ -11,7 +11,6 @@ import com.example.item_feed.presentation.contract.AllItemsIntent
 import com.example.item_feed.presentation.contract.AllItemsState
 import com.example.item_feed.presentation.mapper.toUiModel
 import com.example.item_feed.presentation.model.AllItemUi
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

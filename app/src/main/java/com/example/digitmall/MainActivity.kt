@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MallTheme {
-//                AppNavigation()
+                AppNavigation()
 //                LoginScreen(
 //                    onBack = { },
 //                    onSuccess = { }
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 //                    onBack = {}
 //                ) { }
 
-                FeedScreen()
+//                FeedScreen()
             }
         }
     }
