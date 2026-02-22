@@ -45,7 +45,7 @@ import com.example.ui.theme.common.RegisterButton
 fun LoginScreen(
     onBack: () -> Unit,
     onSuccess: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
