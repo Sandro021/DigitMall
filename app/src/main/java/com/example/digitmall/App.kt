@@ -9,7 +9,6 @@ class App : Application(){
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize Firebase before anything else tries to use it
         FirebaseApp.initializeApp(this)
     }
 }

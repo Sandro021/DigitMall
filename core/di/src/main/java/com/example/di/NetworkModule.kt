@@ -64,14 +64,17 @@ object NetworkModule {
     fun provideAllItemApiService(retrofit: Retrofit): AllItemApiService =
         retrofit.create(AllItemApiService::class.java)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideProfileApi(retrofit: Retrofit): ProfileApi =
         retrofit.create(ProfileApi::class.java)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideFeedApi(retrofit: Retrofit): FeedApi =
         retrofit.create(FeedApi::class.java)
 

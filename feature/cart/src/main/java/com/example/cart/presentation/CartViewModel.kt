@@ -8,6 +8,7 @@ import com.example.cart.domain.usecase.RemoveFromCartUseCase
 import com.example.cart.presentation.contract.CartIntent
 import com.example.cart.presentation.contract.CartState
 import com.example.cart.presentation.mapper.toUiList
+import com.example.data.CurrentUserProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,13 +19,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val getCartItemsUseCase: GetCartItemUseCase,
-    private val removeFromCartUseCase: RemoveFromCartUseCase
+    private val removeFromCartUseCase: RemoveFromCartUseCase,
+    private val currentUserProvider: CurrentUserProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CartState())
     val state = _state.asStateFlow()
 
-    private val currentUserId = "temp_user_1"
+
 
     init {
         handleIntent(CartIntent.LoadCart)
@@ -39,9 +41,17 @@ class CartViewModel @Inject constructor(
 
     private fun loadCartItems() {
         viewModelScope.launch {
+
+            val userId = currentUserProvider.currentUserId
+
+            if (userId == null) {
+                _state.update { it.copy(error = "User not logged in") }
+                return@launch
+            }
+
             _state.update { it.copy(isLoading = true) }
 
-            getCartItemsUseCase(currentUserId)
+            getCartItemsUseCase(userId)
                 .onSuccess { items ->
 
                     val total = items.sumOf {

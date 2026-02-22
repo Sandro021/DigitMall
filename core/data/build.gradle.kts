@@ -4,16 +4,14 @@ plugins {
     alias(libs.plugins.ksp)
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
-
 }
 
 android {
-    namespace = "com.example.di"
+    namespace = "com.example.data"
 
 }
 
 dependencies {
-    
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
@@ -28,13 +26,4 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
-
-    implementation(projects.feature.shopFeed)
-    implementation(projects.feature.cart)
-    implementation(projects.feature.itemList)
-    implementation(projects.feature.itemFeed)
-    implementation(projects.feature.auth)
-    implementation(projects.feature.feed)
-    implementation(projects.core.data)
-
 }

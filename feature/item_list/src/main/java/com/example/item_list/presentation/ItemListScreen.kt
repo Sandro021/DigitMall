@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
@@ -66,7 +67,7 @@ fun ItemListScreen(
     shopId: String,
     viewModel: ItemListViewModel = hiltViewModel(),
     onCartClick: () -> Unit,
-    onBackClick: () -> Unit // Note: You might want to use this in navigationIcon
+    onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -75,18 +76,25 @@ fun ItemListScreen(
     }
 
     Scaffold(
-        // 1. Set Screen Background
         containerColor = MallTheme.colors.background,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.shop_items)) },
-                // 2. Set App Bar Colors
+
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MallTheme.colors.background,
                     titleContentColor = MallTheme.colors.textPrimary,
                     actionIconContentColor = MallTheme.colors.textPrimary,
                     navigationIconContentColor = MallTheme.colors.textPrimary
                 ),
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.navigate_back)
+                        )
+                    }
+                },
                 actions = {
                     IconButton(onClick = onCartClick) {
                         BadgedBox(badge = {
@@ -131,8 +139,7 @@ fun ItemListScreen(
                                 viewModel.handleIntent(ItemListIntent.SelectCategory(category))
                             },
                             label = { Text(category) }
-                            // FilterChip defaults usually adapt well,
-                            // but you can customize colors here if needed.
+
                         )
                     }
                 }
@@ -169,12 +176,11 @@ fun ShopItemRow(
     item: ItemUi,
     onAddToCart: (String) -> Unit
 ) {
-    // Default to first size if available
     var selectedSize by remember { mutableStateOf(item.sizes.firstOrNull() ?: "32") }
 
     Card(
         elevation = CardDefaults.cardElevation(2.dp),
-        // 3. Fix: Use Theme Surface instead of Color.White
+
         colors = CardDefaults.cardColors(
             containerColor = MallTheme.colors.surface
         )
@@ -211,11 +217,10 @@ fun ShopItemRow(
 
                 Spacer(modifier = Modifier.height(Spacing.space8))
 
-                // Size Label
                 Text(
                     text = stringResource(R.string.size, selectedSize),
                     style = MallTheme.typography.priceSmall,
-                    color = MallTheme.colors.textSecondary // Use secondary for label
+                    color = MallTheme.colors.textSecondary
                 )
 
                 Spacer(modifier = Modifier.height(Spacing.space4))
@@ -227,22 +232,20 @@ fun ShopItemRow(
                             modifier = Modifier
                                 .border(
                                     width = 1.dp,
-                                    // 4. Fix: Use textSecondary for unselected border (visible in dark mode)
                                     color = if (isSelected) MallTheme.colors.brandPrimary else MallTheme.colors.textSecondary,
                                     shape = Radius.radius4
                                 )
                                 .background(
-                                    // Slight tint for selected state
+
                                     color = if (isSelected) MallTheme.colors.brandPrimary.copy(alpha = 0.1f) else Color.Transparent
                                 )
-                                .clip(Radius.radius4) // Good practice to clip clickable area
+                                .clip(Radius.radius4)
                                 .clickable { selectedSize = size }
                                 .padding(horizontal = Padding.padding8, vertical = Padding.padding4)
                         ) {
                             Text(
                                 text = size,
                                 style = MallTheme.typography.priceSmall,
-                                // Highlight selected text with Brand color, otherwise normal text
                                 color = if (isSelected) MallTheme.colors.brandPrimary else MallTheme.colors.textPrimary
                             )
                         }

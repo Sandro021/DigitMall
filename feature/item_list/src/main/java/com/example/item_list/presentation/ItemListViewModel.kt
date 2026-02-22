@@ -4,6 +4,7 @@ package com.example.item_list.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cart.domain.usecase.AddToCartUseCase
+import com.example.data.CurrentUserProvider
 import com.example.item_list.domain.usecase.GetShopItemsUseCase
 import com.example.item_list.presentation.contract.ItemListIntent
 import com.example.item_list.presentation.contract.ItemListState
@@ -22,14 +23,13 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemListViewModel @Inject constructor(
     private val getShopItemsUseCase: GetShopItemsUseCase,
-    private val addToCartUseCase: AddToCartUseCase
+    private val addToCartUseCase: AddToCartUseCase,
+    private val currentUserProvider: CurrentUserProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ItemListState())
     val state: StateFlow<ItemListState> = _state.asStateFlow()
 
-
-    private val currentUserId = "temp_user_1"
 
     fun handleIntent(intent: ItemListIntent) {
         when (intent) {
@@ -83,7 +83,14 @@ class ItemListViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(cartCount = it.cartCount + 1) }
 
-            addToCartUseCase(currentUserId, item.toShopItem().toDomain(), size)
+            val userId = currentUserProvider.currentUserId
+
+            if (userId == null) {
+                _state.update { it.copy(error = "User not logged in") }
+                return@launch
+            }
+
+            addToCartUseCase(userId, item.toShopItem().toDomain(), size)
                 .onSuccess {
 
                 }

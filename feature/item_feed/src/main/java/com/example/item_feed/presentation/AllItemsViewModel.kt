@@ -1,9 +1,9 @@
 package com.example.item_feed.presentation
 
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.CurrentUserProvider
 import com.example.item_feed.domain.model.Item
 import com.example.item_feed.domain.usecase.AddToCartUseCase
 import com.example.item_feed.domain.usecase.GetAllItemsUseCase
@@ -24,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AllItemsViewModel @Inject constructor(
     private val getAllItemsUseCase: GetAllItemsUseCase,
-    private val addToCartUseCase: AddToCartUseCase
+    private val addToCartUseCase: AddToCartUseCase,
+    private val currentUserProvider: CurrentUserProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AllItemsState())
@@ -63,6 +64,7 @@ class AllItemsViewModel @Inject constructor(
     private fun fetchItems() {
         viewModelScope.launch {
             val currentState = _state.value
+
             getAllItemsUseCase(
                 categoryFilter = currentState.selectedCategory,
                 sortOrder = currentState.sortOrder
@@ -71,7 +73,6 @@ class AllItemsViewModel @Inject constructor(
                 .catch { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
                 .collect { domainItems ->
 
-                    // NEW: Save the domain items to our local cache
                     currentDomainItems = domainItems
 
                     val uniqueCategories = domainItems.map { it.category }.distinct()
@@ -91,14 +92,17 @@ class AllItemsViewModel @Inject constructor(
     private fun addToCart(uiItem: AllItemUi) {
         viewModelScope.launch {
             try {
-                // 1. Find the real Domain Item from our cache using the ID
                 val domainItem = currentDomainItems.find { it.id == uiItem.id }
 
                 if (domainItem != null) {
-                    // 2. Get the Firebase User ID
-                   // val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "temp_user_1"
 
-                    val userId = "temp_user_1"
+
+                    val userId = currentUserProvider.currentUserId
+
+                    if (userId == null) {
+                        _state.update { it.copy(error = "User not logged in") }
+                        return@launch
+                    }
 
                     addToCartUseCase(item = domainItem, userId = userId)
 

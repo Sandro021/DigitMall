@@ -11,4 +11,5 @@ dependencies {
 
     implementation(projects.core.ui)
     implementation(projects.feature.cart)
+    implementation(projects.core.data)
 }
