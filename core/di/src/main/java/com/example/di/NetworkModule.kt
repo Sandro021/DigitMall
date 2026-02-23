@@ -6,6 +6,7 @@ import com.example.cart.data.remote.CartApiService
 import com.example.feed.data.remote.service.FeedApi
 import com.example.item_feed.data.remote.AllItemApiService
 import com.example.item_list.data.remote.ItemApiService
+import com.example.profile.data.remote.UserProfileApiService
 import com.example.shop_feed.data.remote.ShopApiService
 import com.google.firebase.auth.FirebaseAuth
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -77,5 +78,11 @@ object NetworkModule {
     @Singleton
     fun provideFeedApi(retrofit: Retrofit): FeedApi =
         retrofit.create(FeedApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserProfileApiService(retrofit: Retrofit): UserProfileApiService =
+        retrofit.create(UserProfileApiService::class.java)
+
 
 }

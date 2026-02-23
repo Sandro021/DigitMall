@@ -88,6 +88,8 @@ dependencies {
     implementation(projects.feature.itemFeed)
     implementation(projects.feature.auth)
     implementation(projects.feature.feed)
+    implementation(projects.feature.payment)
+    implementation(projects.feature.profile)
 
 
 }

@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -56,10 +57,19 @@ import com.example.ui.theme.Spacing
 @Composable
 fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
+    onCheckOutClicked: (Float) -> Unit,
+    isPaymentSuccessful: Boolean = false,
+    onClearCartComplete: () -> Unit = {},
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(isPaymentSuccessful) {
+        if (isPaymentSuccessful) {
+            viewModel.handleIntent(CartIntent.ClearCart)
+            onClearCartComplete()
+        }
+    }
     Scaffold(
         containerColor = MallTheme.colors.background,
         topBar = {
@@ -106,7 +116,7 @@ fun CartScreen(
                         }
                         Spacer(modifier = Modifier.height(Spacing.space16))
                         Button(
-                            onClick = { },
+                            onClick = { onCheckOutClicked(state.totalPrice.toFloat()) },
                             modifier = Modifier.fillMaxWidth(),
                             shape = Radius.radius8,
 

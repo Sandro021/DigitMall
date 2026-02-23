@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Museum
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.VideoLibrary
@@ -37,6 +38,10 @@ import com.example.item_feed.presentation.navigation.AllItemsRoute
 import com.example.item_feed.presentation.navigation.allItemsNavGraph
 import com.example.item_list.presentation.navigation.ItemListRoute
 import com.example.item_list.presentation.navigation.itemListNavGraph
+import com.example.payment.navigation.CheckOutRoute
+import com.example.payment.navigation.checkoutNavGraph
+import com.example.profile.presentation.navigation.ProfileRoute
+import com.example.profile.presentation.navigation.profileNavGraph
 import com.example.shop_feed.presentation.navigation.ShopListRoute
 import com.example.shop_feed.presentation.navigation.shopListNavGraph
 
@@ -56,8 +61,9 @@ fun AppNavigation() {
     val bottomTabs = listOf(
         BottomNavItem("Shops", Icons.Default.Storefront, ShopListRoute),
         BottomNavItem("All Items", Icons.AutoMirrored.Filled.List, AllItemsRoute),
-        BottomNavItem("Cart", Icons.Default.ShoppingCart, CartRoute),
-        BottomNavItem("Feed", Icons.Default.VideoLibrary, FeedRoute)
+        BottomNavItem("Cart", Icons.Default.ShoppingCart, CartRoute(0.0F)),
+        BottomNavItem("Feed", Icons.Default.VideoLibrary, FeedRoute),
+        BottomNavItem("Profile", Icons.Default.Museum, ProfileRoute)
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -126,6 +132,9 @@ fun AppNavigation() {
                 }
             )
 
+            profileNavGraph(
+                onBackClick = { navController.popBackStack() }
+            )
             allItemsNavGraph { }
 
             shopListNavGraph(
@@ -133,9 +142,23 @@ fun AppNavigation() {
                     navController.navigate(ItemListRoute(shopId))
                 }
             )
+            checkoutNavGraph(
+                onBackClick = { navController.popBackStack() },
+                onPaymentSuccess = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("payment_successful", true)
+
+                    navController.popBackStack()
+                }
+            )
 
             cartNavGraph(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onCheckOutClicked = { totalAmountDouble ->
+
+                    navController.navigate(CheckOutRoute(totalAmount = totalAmountDouble))
+                }
             )
 
             itemListNavGraph(

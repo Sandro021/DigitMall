@@ -33,6 +33,8 @@
             <option value="$PROJECT_DIR$/feature/feed" />
             <option value="$PROJECT_DIR$/feature/item_feed" />
             <option value="$PROJECT_DIR$/feature/item_list" />
+            <option value="$PROJECT_DIR$/feature/payment" />
+            <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/shop_feed" />
           </set>
         </option>

@@ -27,7 +27,6 @@ class CartViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
 
-
     init {
         handleIntent(CartIntent.LoadCart)
     }
@@ -36,6 +35,7 @@ class CartViewModel @Inject constructor(
         when (intent) {
             is CartIntent.LoadCart -> loadCartItems()
             is CartIntent.RemoveItem -> deleteItem(intent.id)
+            is CartIntent.ClearCart -> clearAllItems()
         }
     }
 
@@ -100,6 +100,25 @@ class CartViewModel @Inject constructor(
 
                     loadCartItems()
                 }
+        }
+    }
+
+    private fun clearAllItems() {
+        viewModelScope.launch {
+            val itemsToDelete = _state.value.cartItems
+
+            _state.update {
+                it.copy(
+                    cartItems = emptyList(),
+                    totalPrice = 0.0
+                )
+            }
+
+            itemsToDelete.forEach { item ->
+                removeFromCartUseCase(item.id).onFailure { error ->
+
+                }
+            }
         }
     }
 }

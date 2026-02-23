@@ -36,5 +36,6 @@ dependencies {
     implementation(projects.feature.auth)
     implementation(projects.feature.feed)
     implementation(projects.core.data)
+    implementation(projects.feature.profile)
 
 }

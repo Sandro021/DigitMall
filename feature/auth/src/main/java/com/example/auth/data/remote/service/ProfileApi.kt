@@ -11,7 +11,6 @@ interface ProfileApi {
     @POST("profiles")
     suspend fun createProfile(@Body dto: ProfileDto): ProfileDto
 
-    // after login: GET /profiles?firebaseUid=UID
     @GET("profiles")
     suspend fun getProfilesByFirebaseUid(
         @Query("firebaseUid") firebaseUid: String

@@ -7,14 +7,23 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data object CartRoute
+data class CartRoute(val totalAmount: Float)
 
 fun NavGraphBuilder.cartNavGraph(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onCheckOutClicked: (Float) -> Unit
 ) {
-    composable<CartRoute> {
+    composable<CartRoute> { backStackEntry ->
+        val isPaymentSuccessful = backStackEntry.savedStateHandle
+            .get<Boolean>("payment_successful") ?: false
+
         CartScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onCheckOutClicked = onCheckOutClicked,
+            isPaymentSuccessful = isPaymentSuccessful,
+            onClearCartComplete = {
+                backStackEntry.savedStateHandle["payment_successful"] = false
+            }
         )
     }
 }
