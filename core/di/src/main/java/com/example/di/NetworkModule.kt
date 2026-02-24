@@ -19,19 +19,25 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
 
     private const val BASE_URL =
         "https://697debce97386252a26960a0.mockapi.io/"
 
     @Provides
     @Singleton
-    fun provideOkHttp(): OkHttpClient = OkHttpClient.Builder().build()
+    fun provideOkHttp(): OkHttpClient =
+        OkHttpClient.Builder().addInterceptor (loggingInterceptor).build()
 
     @Provides
     @Singleton

@@ -3,6 +3,7 @@ package com.example.auth.data.repository
 import com.example.auth.data.remote.mapper.toDomain
 import com.example.auth.data.remote.service.ProfileApi
 import com.example.auth.domain.model.Profile
+import com.example.auth.domain.model.Resource
 import com.example.auth.domain.repository.LoginRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
@@ -15,17 +16,33 @@ class LoginRepositoryImpl @Inject constructor(
 ) : LoginRepository {
 
     override suspend fun login(email: String, password: String): Profile {
-        // 1) Firebase login
         firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
         val uid = firebaseAuth.currentUser?.uid
             ?: throw kotlin.IllegalStateException("Firebase uid is null after login")
 
-        // 2) Fetch profile from MockAPI by firebaseUid
         val profiles = profileApi.getProfilesByFirebaseUid(uid)
         val profileDto = profiles.firstOrNull()
             ?: throw kotlin.IllegalStateException("Profile not found in MockAPI for this user")
 
         return profileDto.toDomain()
+    }
+
+
+    override suspend fun getProfileById(id: String): Resource<Profile> {
+        return try {
+            val responseList = profileApi.getProfileById(id)
+
+            if (responseList.isNotEmpty()) {
+
+                val userProfile = responseList.first().toDomain()
+
+                Resource.Success(userProfile)
+            } else {
+                Resource.Error("User profile not found in database.")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
     }
 }

@@ -70,7 +70,7 @@ fun ProfileScreen(
                     .background(MallTheme.colors.background),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = MallTheme.colors.brandSecondary) // Standout loading color
+                CircularProgressIndicator(color = MallTheme.colors.brandSecondary)
             }
             return@Scaffold
         }

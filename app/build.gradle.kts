@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.serialization")
 
 }
 
@@ -62,6 +63,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
     implementation("androidx.compose.material:material-icons-extended")
 
     //hilt
@@ -91,6 +94,7 @@ dependencies {
     implementation(projects.feature.payment)
     implementation(projects.feature.profile)
     implementation(projects.feature.companyProfile)
+    implementation(projects.core.data)
 
 
 }

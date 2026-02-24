@@ -32,9 +32,9 @@ import com.example.auth.navigation.WelcomeRoute
 import com.example.auth.navigation.authGraph
 import com.example.cart.presentation.navigation.CartRoute
 import com.example.cart.presentation.navigation.cartNavGraph
-import com.example.company_profile.presentation.CompanyProfileScreen
-import com.example.company_profile.presentation.navigation.CompanyProfileRoute
 import com.example.company_profile.presentation.navigation.companyProfileNavGraph
+import com.example.digitmall.dynamic_profile.navigation.DynamicProfileRoute
+import com.example.digitmall.dynamic_profile.navigation.dynamicProfileNavGraph
 import com.example.feed.navigation.FeedRoute
 import com.example.feed.navigation.feedNavGraph
 import com.example.item_feed.presentation.navigation.AllItemsRoute
@@ -43,13 +43,11 @@ import com.example.item_list.presentation.navigation.ItemListRoute
 import com.example.item_list.presentation.navigation.itemListNavGraph
 import com.example.payment.navigation.CheckOutRoute
 import com.example.payment.navigation.checkoutNavGraph
-import com.example.profile.presentation.navigation.ProfileRoute
 import com.example.profile.presentation.navigation.profileNavGraph
 import com.example.shop_feed.presentation.navigation.ShopListRoute
 import com.example.shop_feed.presentation.navigation.shopListNavGraph
-
-// Import your custom theme
 import com.example.ui.theme.MallTheme
+
 
 data class BottomNavItem(
     val label: String,
@@ -66,7 +64,7 @@ fun AppNavigation() {
         BottomNavItem("All Items", Icons.AutoMirrored.Filled.List, AllItemsRoute),
         BottomNavItem("Cart", Icons.Default.ShoppingCart, CartRoute(0.0F)),
         BottomNavItem("Feed", Icons.Default.VideoLibrary, FeedRoute),
-        BottomNavItem("Profile", Icons.Default.Museum, CompanyProfileRoute)
+        BottomNavItem("Profile", Icons.Default.Museum, DynamicProfileRoute)
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -134,6 +132,8 @@ fun AppNavigation() {
                     }
                 }
             )
+            dynamicProfileNavGraph(onBackClick = { navController.popBackStack() })
+
             companyProfileNavGraph(onBackClick = { navController.popBackStack() })
 
             profileNavGraph(
