@@ -16,17 +16,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.company_profile.R
 import com.example.company_profile.presentation.contract.CompanyEffect
 import com.example.company_profile.presentation.contract.CompanyIntent
 import com.example.company_profile.presentation.model.ShopItemUiModel
 import com.example.company_profile.presentation.model.ShopUiModel
-import kotlin.collections.isNotEmpty
-
+import com.example.ui.theme.MallTheme
+import com.example.ui.theme.Padding
+import com.example.ui.theme.Spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,13 +46,13 @@ fun CompanyProfileScreen(
     var shopDescInput by remember { mutableStateOf("") }
     var shopLocInput by remember { mutableStateOf("") }
     var selectedShopImageUri by remember { mutableStateOf<Uri?>(null) }
-    var itemCategoryInput by remember { mutableStateOf("") }
+
     var showAddItemDialog by remember { mutableStateOf(false) }
     var selectedShopIdForUpload by remember { mutableStateOf<String?>(null) }
     var itemNameInput by remember { mutableStateOf("") }
     var itemPriceInput by remember { mutableStateOf("") }
+    var itemCategoryInput by remember { mutableStateOf("") }
     var itemSizesInput by remember { mutableStateOf("") }
-
 
     val shopImagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
@@ -59,7 +62,6 @@ fun CompanyProfileScreen(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null && selectedShopIdForUpload != null) {
-
             val parsedSizes = itemSizesInput
                 .split(",")
                 .map { it.trim() }
@@ -71,20 +73,17 @@ fun CompanyProfileScreen(
                     name = itemNameInput,
                     price = itemPriceInput,
                     imageUri = uri.toString(),
-                    category = itemCategoryInput.ifEmpty { "General" },
+                    category = itemCategoryInput.ifEmpty { context.getString(R.string.general) },
                     sizes = parsedSizes
                 )
             )
+
             showAddItemDialog = false
             selectedShopIdForUpload = null
             itemNameInput = ""
             itemPriceInput = ""
             itemCategoryInput = ""
             itemSizesInput = ""
-            showAddItemDialog = false
-            selectedShopIdForUpload = null
-            itemNameInput = ""
-            itemPriceInput = ""
         }
     }
 
@@ -96,11 +95,9 @@ fun CompanyProfileScreen(
         }
     }
 
-    // --- Effects ---
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-
                 is CompanyEffect.ShowToast -> Toast.makeText(
                     context,
                     effect.message,
@@ -110,40 +107,74 @@ fun CompanyProfileScreen(
         }
     }
 
-    // --- UI Content ---
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Company Dashboard") }) }
+        containerColor = MallTheme.colors.background,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        stringResource(R.string.company_dashboard),
+                        color = MallTheme.colors.textPrimary
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MallTheme.colors.background
+                )
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            TabRow(selectedTabIndex = selectedTabIndex) {
+            TabRow(
+                selectedTabIndex = selectedTabIndex,
+                containerColor = MallTheme.colors.surface,
+                contentColor = MallTheme.colors.brandPrimary
+            ) {
                 Tab(
                     selected = selectedTabIndex == 0,
                     onClick = { selectedTabIndex = 0 },
-                    text = { Text("My Shops") })
+                    text = {
+                        Text(
+                            text = stringResource(R.string.my_shops),
+                            color = if (selectedTabIndex == 0) MallTheme.colors.brandPrimary else MallTheme.colors.textSecondary
+                        )
+                    }
+                )
                 Tab(
                     selected = selectedTabIndex == 1,
                     onClick = { selectedTabIndex = 1 },
-                    text = { Text("My Reels") })
+                    text = {
+                        Text(
+                            text = stringResource(R.string.my_reels),
+                            color = if (selectedTabIndex == 1) MallTheme.colors.brandPrimary else MallTheme.colors.textSecondary
+                        )
+                    }
+                )
             }
 
-            if (state.isLoading) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            if (state.isLoading) LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = MallTheme.colors.brandSecondary
+            )
 
             if (selectedTabIndex == 0) {
-                // --- SHOPS TAB ---
                 LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    contentPadding = PaddingValues(Padding.padding16),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.space16)
                 ) {
                     item {
                         Button(
                             onClick = { showCreateShopDialog = true },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = MallTheme.colors.brandPrimary)
                         ) {
-                            Text("Create New Shop")
+                            Text(
+                                stringResource(R.string.create_new_shop),
+                                color = MallTheme.colors.onBrandPrimary
+                            )
                         }
                     }
                     items(state.shops) { shop ->
@@ -153,48 +184,64 @@ fun CompanyProfileScreen(
                             onAddItemClicked = {
                                 selectedShopIdForUpload = shop.id
                                 showAddItemDialog = true
-                            })
+                            }
+                        )
                     }
                 }
             } else {
-                // --- REELS TAB ---
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Button(onClick = { reelVideoPicker.launch("video/*") }) { Text("Upload Reel") }
+                    Button(
+                        onClick = { reelVideoPicker.launch(context.getString(R.string.video)) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MallTheme.colors.brandPrimary)
+                    ) {
+                        Text(
+                            stringResource(R.string.upload_reel),
+                            color = MallTheme.colors.onBrandPrimary
+                        )
+                    }
                 }
             }
         }
 
-        // --- DIALOGS ---
-
-        // 1. Create Shop Dialog
         if (showCreateShopDialog) {
             AlertDialog(
                 onDismissRequest = { showCreateShopDialog = false },
-                title = { Text("Create New Shop") },
+                containerColor = MallTheme.colors.surface,
+                titleContentColor = MallTheme.colors.textPrimary,
+                textContentColor = MallTheme.colors.textPrimary,
+                title = { Text(stringResource(R.string.create_new_shop)) },
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedTextField(
                             value = shopNameInput,
                             onValueChange = { shopNameInput = it },
-                            label = { Text("Shop Name") })
+                            label = { Text(stringResource(R.string.shop_name)) }
+                        )
                         OutlinedTextField(
                             value = shopDescInput,
                             onValueChange = { shopDescInput = it },
-                            label = { Text("Description") })
+                            label = { Text(stringResource(R.string.description)) }
+                        )
                         OutlinedTextField(
                             value = shopLocInput,
                             onValueChange = { shopLocInput = it },
-                            label = { Text("Location") })
+                            label = { Text(stringResource(R.string.location)) }
+                        )
 
-                        // Image Picker Button & Preview
-                        Button(onClick = {
-                            shopImagePicker.launch(
-                                PickVisualMediaRequest(
-                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                        Button(
+                            onClick = {
+                                shopImagePicker.launch(
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                                 )
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = MallTheme.colors.brandSecondary)
+                        ) {
+                            Text(
+                                text = if (selectedShopImageUri == null) "Pick Shop Cover Image" else stringResource(
+                                    R.string.change_image
+                                ),
+                                color = MallTheme.colors.onBrandPrimary
                             )
-                        }) {
-                            Text(if (selectedShopImageUri == null) "Pick Shop Cover Image" else "Change Image")
                         }
                         if (selectedShopImageUri != null) {
                             AsyncImage(
@@ -210,6 +257,7 @@ fun CompanyProfileScreen(
                 },
                 confirmButton = {
                     Button(
+                        colors = ButtonDefaults.buttonColors(containerColor = MallTheme.colors.brandPrimary),
                         onClick = {
                             if (selectedShopImageUri != null && shopNameInput.isNotEmpty()) {
                                 viewModel.handleIntent(
@@ -221,92 +269,112 @@ fun CompanyProfileScreen(
                                     )
                                 )
                                 showCreateShopDialog = false
-                                // Reset inputs
-                                shopNameInput = ""; shopDescInput = ""; shopLocInput =
-                                    ""; selectedShopImageUri = null
+                                shopNameInput = ""
+                                shopDescInput = ""
+                                shopLocInput = ""
+                                selectedShopImageUri = null
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Name and Image required",
+                                    context.getString(R.string.name_and_image_required),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
-                    ) { Text("Create") }
+                    ) { Text("Create", color = MallTheme.colors.onBrandPrimary) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showCreateShopDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = { showCreateShopDialog = false }) {
+                        Text(
+                            stringResource(R.string.cancel),
+                            color = MallTheme.colors.textSecondary
+                        )
+                    }
                 }
             )
         }
 
-        // 2. Add Item Dialog
         if (showAddItemDialog) {
             AlertDialog(
                 onDismissRequest = { showAddItemDialog = false },
-                title = { Text("Add Item details") },
+                containerColor = MallTheme.colors.surface,
+                titleContentColor = MallTheme.colors.textPrimary,
+                textContentColor = MallTheme.colors.textPrimary,
+                title = { Text(stringResource(R.string.add_item_details)) },
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedTextField(
                             value = itemNameInput,
                             onValueChange = { itemNameInput = it },
-                            label = { Text("Item Name") }
+                            label = { Text(stringResource(R.string.item_name)) }
                         )
                         OutlinedTextField(
                             value = itemPriceInput,
                             onValueChange = { itemPriceInput = it },
-                            label = { Text("Price (e.g., 19.99)") },
+                            label = { Text(stringResource(R.string.price_e_g_19_99)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                         )
                         OutlinedTextField(
                             value = itemCategoryInput,
                             onValueChange = { itemCategoryInput = it },
-                            label = { Text("Category (e.g., Shoes, Electronics)") }
+                            label = { Text(stringResource(R.string.category_e_g_shoes_shirt)) }
                         )
                         OutlinedTextField(
                             value = itemSizesInput,
                             onValueChange = { itemSizesInput = it },
-                            label = { Text("Sizes (comma separated: 32, 34, 36)") }
+                            label = { Text(stringResource(R.string.sizes_comma_separated_32_34_36)) }
                         )
                     }
                 },
                 confirmButton = {
                     Button(
+                        colors = ButtonDefaults.buttonColors(containerColor = MallTheme.colors.brandPrimary),
                         onClick = {
                             if (itemNameInput.isNotEmpty() && itemPriceInput.isNotEmpty()) {
                                 itemImagePicker.launch(
-                                    PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
-                                    )
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                                 )
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Fill name and price first",
+                                    context.getString(R.string.fill_name_and_price_first),
                                     Toast.LENGTH_SHORT
                                 ).show()
+
                             }
                         }
-                    ) { Text("Next: Pick Image") }
+                    ) {
+                        Text(
+                            stringResource(R.string.next_pick_image),
+                            color = MallTheme.colors.onBrandPrimary
+                        )
+                    }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showAddItemDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = { showAddItemDialog = false }) {
+                        Text(
+                            stringResource(R.string.cancel),
+                            color = MallTheme.colors.textSecondary
+                        )
+                    }
                 }
             )
         }
     }
 }
 
-// Helper Composable for Shop Card
 @Composable
 fun ShopCard(
     shop: ShopUiModel,
     items: List<ShopItemUiModel>,
     onAddItemClicked: () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(4.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(containerColor = MallTheme.colors.surface)
+    ) {
         Column {
-            // Shop Cover Image
             if (shop.imageUrl.isNotEmpty()) {
                 AsyncImage(
                     model = shop.imageUrl,
@@ -317,19 +385,36 @@ fun ShopCard(
                     contentScale = ContentScale.Crop
                 )
             }
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(Padding.padding16)) {
                 Text(
                     text = shop.name,
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
+                    color = MallTheme.colors.textPrimary
                 )
-                Text(text = shop.location, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = shop.location,
+                    color = MallTheme.colors.textSecondary
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(onClick = onAddItemClicked) { Text("Add Item to ${shop.name}") }
+                Button(
+                    onClick = onAddItemClicked,
+                    colors = ButtonDefaults.buttonColors(containerColor = MallTheme.colors.brandSecondary)
+                ) {
+                    Text("Add Item to ${shop.name}", color = MallTheme.colors.onBrandPrimary)
+                }
                 if (items.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Items:", fontWeight = FontWeight.SemiBold)
-                    items.forEach { item -> Text("- ${item.name} (${item.formattedPrice})") }
+                    Text(
+                        text = "Items:",
+                        fontWeight = FontWeight.SemiBold,
+                        color = MallTheme.colors.textPrimary
+                    )
+                    items.forEach { item ->
+                        Text(
+                            text = "- ${item.name} ($${item.formattedPrice})",
+                            color = MallTheme.colors.textSecondary
+                        )
+                    }
                 }
             }
         }

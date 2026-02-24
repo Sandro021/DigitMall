@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="general">General</string>
+    <string name="company_dashboard">Company Dashboard</string>
+    <string name="my_shops">My Shops</string>
+    <string name="my_reels">My Reels</string>
+    <string name="create_new_shop">Create New Shop</string>
+    <string name="video">video/*</string>
+    <string name="upload_reel">Upload Reel</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
+    <string name="change_image">Change Image</string>
+    <string name="name_and_image_required">Name and Image required</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_item_details">Add Item details</string>
+    <string name="item_name">Item Name</string>
+    <string name="price_e_g_19_99">Price (e.g., 19.99)</string>
+    <string name="category_e_g_shoes_shirt">Category (e.g., Shoes, Shirt)</string>
+    <string name="sizes_comma_separated_32_34_36">Sizes (comma separated: 32, 34, 36)</string>
+    <string name="next_pick_image">Next: Pick Image</string>
+    <string name="fill_name_and_price_first">Fill name and price first</string>
+</resources>

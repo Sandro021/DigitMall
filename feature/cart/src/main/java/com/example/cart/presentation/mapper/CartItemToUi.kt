@@ -21,7 +21,7 @@ fun CartItem.toUi(): CartItemUi {
 }
 
 private fun formatPrice(amount: Double): String {
-    return "$%.2f".format(amount)
+    return "%.2f".format(amount)
 }
 
 fun List<CartItem>.toUiList(): List<CartItemUi> {

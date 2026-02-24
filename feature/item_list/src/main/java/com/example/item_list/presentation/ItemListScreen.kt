@@ -207,7 +207,7 @@ fun ShopItemRow(
                     text = item.name,
                     fontWeight = FontWeight.Bold,
                     style = MallTheme.typography.productTitle,
-                    color = MallTheme.colors.textPrimary // Explicit text color
+                    color = MallTheme.colors.textPrimary
                 )
                 Text(
                     text = "$${item.displayPrice}",

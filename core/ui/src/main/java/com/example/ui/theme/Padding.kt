@@ -4,7 +4,9 @@ import androidx.compose.ui.unit.dp
 
 object Padding {
     val padding4 = 4.dp
+    val padding6 = 6.dp
     val padding8 = 8.dp
+
     val padding12 = 12.dp
     val padding16 = 16.dp
     val padding10 = 10.dp
@@ -13,6 +15,7 @@ object Padding {
     val padding24 = 24.dp
     val padding30 = 30.dp
 
+    val padding32 = 32.dp
     val padding48 = 48.dp
     val padding50 = 50.dp
 

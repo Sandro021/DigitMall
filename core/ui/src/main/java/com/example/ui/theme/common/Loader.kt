@@ -35,12 +35,11 @@ fun LogoLoader(
     size: Dp = 84.dp,
     ringColor: Color = Color.White,
     backgroundColor: Color = Color.Transparent,
-    segments: Int = 12,          // higher = smoother
-    speedMsPerRound: Int = 900,  // lower = faster
+    segments: Int = 12,
+    speedMsPerRound: Int = 900,
 ) {
     val infinite = rememberInfiniteTransition(label = "chatgpt_like_loader")
 
-    // ring rotation
     val rot by infinite.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
@@ -50,7 +49,6 @@ fun LogoLoader(
         label = "rot"
     )
 
-    // subtle pulse (premium feel)
     val pulse by infinite.animateFloat(
         initialValue = 0.96f,
         targetValue = 1.02f,
@@ -67,7 +65,6 @@ fun LogoLoader(
             .background(backgroundColor),
         contentAlignment = Alignment.Center
     ) {
-        // Segmented ring
         Canvas(
             modifier = Modifier
                 .matchParentSize()
@@ -82,25 +79,20 @@ fun LogoLoader(
             )
             val topLeft = Offset(pad, pad)
 
-            // Each segment is a small arc. We make a bright "head" and fading "tail".
             val segmentSweep = 360f / segments
             val gap = segmentSweep * 0.45f // space between segments (controls “dotty” look)
             val drawnSweep = segmentSweep - gap
 
-            // head index moves with rotation
             val head = (rot / segmentSweep)
 
             for (i in 0 until segments) {
-                // distance from head (0 = head, bigger = tail)
-                // we want head brightest, tail fades quickly
+
                 val dist = circularDistance(i.toFloat(), head, segments.toFloat())
 
-                // tune this curve to feel like ChatGPT loader
                 val alpha = when {
                     dist < 0.0f -> 0f
                     else -> {
                         val x = (1f - (dist / (segments * 0.55f))).coerceIn(0f, 1f)
-                        // sharper fade
                         x * x
                     }
                 }
@@ -121,23 +113,19 @@ fun LogoLoader(
             }
         }
 
-        // Center logo (slight counter-scale feels “locked” while ring moves)
         Image(
             painter = painterResource(logoRes),
             contentDescription = "Loading",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .matchParentSize()
-                .scale(0.86f) // gives space for ring
+                .scale(0.86f)
                 .clip(CircleShape)
         )
     }
 }
 
-/**
- * Distance between segment index and head on a circle (0..N),
- * where 0 means at head, increasing values mean farther behind.
- */
+
 private fun circularDistance(i: Float, head: Float, n: Float): Float {
     // put i "behind" head
     var d = head - i

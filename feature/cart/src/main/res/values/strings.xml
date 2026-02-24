@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_cart">My Cart</string>
+    <string name="back">Back</string>
+    <string name="total">Total:</string>
+    <string name="proceed_to_checkout">Proceed to Checkout</string>
+    <string name="your_cart_is_empty">Your cart is empty</string>
+    <string name="delete">Delete</string>
+</resources>

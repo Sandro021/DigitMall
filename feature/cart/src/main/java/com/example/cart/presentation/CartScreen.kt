@@ -41,16 +41,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.cart.R
 import com.example.cart.presentation.contract.CartIntent
 import com.example.cart.presentation.model.CartItemUi
 import com.example.ui.theme.MallTheme
 import com.example.ui.theme.Padding
 import com.example.ui.theme.Radius
 import com.example.ui.theme.Spacing
+import com.example.ui.theme.common.LogoLoader
 
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,7 +77,7 @@ fun CartScreen(
         containerColor = MallTheme.colors.background,
         topBar = {
             TopAppBar(
-                title = { Text("My Cart") },
+                title = { Text(stringResource(R.string.my_cart)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MallTheme.colors.background,
                     titleContentColor = MallTheme.colors.textPrimary,
@@ -85,7 +88,7 @@ fun CartScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -103,7 +106,7 @@ fun CartScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                "Total:",
+                                stringResource(R.string.total),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MallTheme.colors.textPrimary
                             )
@@ -125,7 +128,7 @@ fun CartScreen(
                                 contentColor = MallTheme.colors.onBrandPrimary
                             )
                         ) {
-                            Text("Proceed to Checkout")
+                            Text(stringResource(R.string.proceed_to_checkout))
                         }
                     }
                 }
@@ -139,15 +142,17 @@ fun CartScreen(
         ) {
 
             if (state.isLoading) {
-                CircularProgressIndicator(
+
+                LogoLoader(
                     modifier = Modifier.align(Alignment.Center),
-                    color = MallTheme.colors.brandPrimary
+                    size = 50.dp,
+                    logoRes = com.example.ui.R.drawable.logo
                 )
             }
 
             if (state.cartItems.isEmpty() && !state.isLoading) {
                 Text(
-                    "Your cart is empty",
+                    stringResource(R.string.your_cart_is_empty),
                     modifier = Modifier.align(Alignment.Center),
                     color = MallTheme.colors.textSecondary
                 )
@@ -230,7 +235,7 @@ fun CartItemRow(
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(R.string.delete),
                     tint = MallTheme.colors.error
                 )
             }

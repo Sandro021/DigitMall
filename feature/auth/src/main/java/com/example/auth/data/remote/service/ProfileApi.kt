@@ -17,9 +17,6 @@ interface ProfileApi {
     ): List<ProfileDto>
 
 
-//    @GET("profiles/{id}") // Change "profiles" to whatever your MockAPI endpoint is called
-//    suspend fun getProfileById(@Path("id") id: String): ProfileDto
-
     @GET("profiles")
     suspend fun getProfileById(@Query("firebaseUid") firebaseUid: String): List<ProfileDto>
 }

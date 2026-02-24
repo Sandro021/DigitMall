@@ -167,7 +167,13 @@ fun AppNavigation() {
 
             itemListNavGraph(
                 onBackClick = { navController.popBackStack() },
-                onCartClick = { navController.navigate(CartRoute) }
+                onCartClick = {
+                    navController.navigate(
+                        CartRoute(
+                            totalAmount = 0F
+                        )
+                    )
+                }
             )
 
             feedNavGraph()
