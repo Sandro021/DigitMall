@@ -2,7 +2,7 @@ package com.example.item_feed.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.item_feed.presentation.AllItemsFeedScreen
+import com.example.item_feed.presentation.all_item.AllItemsFeedScreen
 import kotlinx.serialization.Serializable
 
 

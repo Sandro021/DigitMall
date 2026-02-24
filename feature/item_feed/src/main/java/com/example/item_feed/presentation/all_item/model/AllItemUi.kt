@@ -1,4 +1,4 @@
-package com.example.item_feed.presentation.model
+package com.example.item_feed.presentation.all_item.model
 
 data class AllItemUi(
     val id: String,

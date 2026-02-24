@@ -1,4 +1,4 @@
-package com.example.item_feed.presentation
+package com.example.item_feed.presentation.all_item
 
 
 import androidx.compose.foundation.background
@@ -52,8 +52,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.item_feed.domain.model.SortOrder
-import com.example.item_feed.presentation.contract.AllItemsIntent
-import com.example.item_feed.presentation.model.AllItemUi
+import com.example.item_feed.presentation.all_item.AllItemsViewModel
+import com.example.item_feed.presentation.all_item.contract.AllItemsIntent
+import com.example.item_feed.presentation.all_item.model.AllItemUi
+import com.example.ui.R
 import com.example.ui.theme.MallTheme
 import com.example.ui.theme.Padding
 import com.example.ui.theme.Radius
@@ -171,7 +173,7 @@ fun AllItemsFeedScreen(
                     LogoLoader(
                         modifier = Modifier.align(Alignment.Center),
                         size = 92.dp,
-                        logoRes = com.example.ui.R.drawable.logo
+                        logoRes = R.drawable.logo
                     )
                 }
             } else if (state.error != null) {

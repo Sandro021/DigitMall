@@ -1,7 +1,7 @@
-package com.example.item_feed.presentation.contract
+package com.example.item_feed.presentation.all_item.contract
 
 import com.example.item_feed.domain.model.SortOrder
-import com.example.item_feed.presentation.model.AllItemUi
+import com.example.item_feed.presentation.all_item.model.AllItemUi
 
 data class AllItemsState(
     val isLoading: Boolean = false,

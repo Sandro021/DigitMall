@@ -1,5 +1,4 @@
-package com.example.item_feed.presentation
-
+package com.example.item_feed.presentation.all_item
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,10 +7,10 @@ import com.example.data.CurrentUserProvider
 import com.example.item_feed.domain.model.Item
 import com.example.item_feed.domain.usecase.AddToCartUseCase
 import com.example.item_feed.domain.usecase.GetAllItemsUseCase
-import com.example.item_feed.presentation.contract.AllItemsIntent
-import com.example.item_feed.presentation.contract.AllItemsState
-import com.example.item_feed.presentation.mapper.toUiModel
-import com.example.item_feed.presentation.model.AllItemUi
+import com.example.item_feed.presentation.all_item.contract.AllItemsIntent
+import com.example.item_feed.presentation.all_item.contract.AllItemsState
+import com.example.item_feed.presentation.all_item.mapper.toUiModel
+import com.example.item_feed.presentation.all_item.model.AllItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
