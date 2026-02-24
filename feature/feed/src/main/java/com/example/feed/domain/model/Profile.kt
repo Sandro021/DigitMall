@@ -3,7 +3,6 @@ package com.example.feed.domain.model
 data class Profile(
     val id: String,
     val accountType: AccountType,
-
     val username: String?,
     val companyName: String?,
     val firstName: String?,

@@ -90,6 +90,7 @@ dependencies {
     implementation(projects.feature.feed)
     implementation(projects.feature.payment)
     implementation(projects.feature.profile)
+    implementation(projects.feature.companyProfile)
 
 
 }

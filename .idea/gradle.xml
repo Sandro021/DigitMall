@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/auth" />
             <option value="$PROJECT_DIR$/feature/cart" />
+            <option value="$PROJECT_DIR$/feature/company_profile" />
             <option value="$PROJECT_DIR$/feature/feed" />
             <option value="$PROJECT_DIR$/feature/item_feed" />
             <option value="$PROJECT_DIR$/feature/item_list" />

@@ -3,6 +3,8 @@ package com.example.di
 
 import com.example.auth.data.remote.service.ProfileApi
 import com.example.cart.data.remote.CartApiService
+import com.example.company_profile.data.remote.reels.ReelsApiService
+import com.example.company_profile.data.remote.shop.CompanyShopApiService
 import com.example.feed.data.remote.service.FeedApi
 import com.example.item_feed.data.remote.AllItemApiService
 import com.example.item_list.data.remote.ItemApiService
@@ -84,5 +86,13 @@ object NetworkModule {
     fun provideUserProfileApiService(retrofit: Retrofit): UserProfileApiService =
         retrofit.create(UserProfileApiService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideReelsApiService(retrofit: Retrofit): ReelsApiService =
+        retrofit.create(ReelsApiService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideCompanyShopApiService(retrofit: Retrofit): CompanyShopApiService =
+        retrofit.create(CompanyShopApiService::class.java)
 }

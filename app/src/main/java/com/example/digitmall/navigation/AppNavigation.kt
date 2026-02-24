@@ -32,6 +32,9 @@ import com.example.auth.navigation.WelcomeRoute
 import com.example.auth.navigation.authGraph
 import com.example.cart.presentation.navigation.CartRoute
 import com.example.cart.presentation.navigation.cartNavGraph
+import com.example.company_profile.presentation.CompanyProfileScreen
+import com.example.company_profile.presentation.navigation.CompanyProfileRoute
+import com.example.company_profile.presentation.navigation.companyProfileNavGraph
 import com.example.feed.navigation.FeedRoute
 import com.example.feed.navigation.feedNavGraph
 import com.example.item_feed.presentation.navigation.AllItemsRoute
@@ -63,7 +66,7 @@ fun AppNavigation() {
         BottomNavItem("All Items", Icons.AutoMirrored.Filled.List, AllItemsRoute),
         BottomNavItem("Cart", Icons.Default.ShoppingCart, CartRoute(0.0F)),
         BottomNavItem("Feed", Icons.Default.VideoLibrary, FeedRoute),
-        BottomNavItem("Profile", Icons.Default.Museum, ProfileRoute)
+        BottomNavItem("Profile", Icons.Default.Museum, CompanyProfileRoute)
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -131,6 +134,7 @@ fun AppNavigation() {
                     }
                 }
             )
+            companyProfileNavGraph(onBackClick = { navController.popBackStack() })
 
             profileNavGraph(
                 onBackClick = { navController.popBackStack() }

@@ -1,6 +1,7 @@
 package com.example.item_feed.presentation
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.CurrentUserProvider
@@ -70,9 +71,14 @@ class AllItemsViewModel @Inject constructor(
                 sortOrder = currentState.sortOrder
             )
                 .onStart { _state.update { it.copy(isLoading = true, error = null) } }
-                .catch { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
+                .catch { e ->
+                    Log.e("API_CRASH", "CRASH REASON: ${e.message}", e)
+
+                    _state.update { it.copy(isLoading = false, error = e.message) }
+                }
                 .collect { domainItems ->
 
+                    Log.d("API_SUCCESS", "Successfully downloaded ${domainItems.size} items!")
                     currentDomainItems = domainItems
 
                     val uniqueCategories = domainItems.map { it.category }.distinct()

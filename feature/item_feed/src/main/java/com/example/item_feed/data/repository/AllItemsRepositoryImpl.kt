@@ -1,6 +1,7 @@
 package com.example.item_feed.data.repository
 
 
+import android.util.Log
 import com.example.item_feed.data.dto.CartItemRequestDto
 import com.example.item_feed.data.mapper.toDomain
 import com.example.item_feed.data.remote.AllItemApiService
@@ -28,6 +29,8 @@ class AllItemsRepositoryImpl @Inject constructor(
                         val items = api.getItemsForShop(shopId)
                         items
                     } catch (e: Exception) {
+
+                        Log.e("API_CRASH", "Failed to fetch items for shop $shopId: ${e.message}", e)
                         emptyList()
                     }
                 } else {
