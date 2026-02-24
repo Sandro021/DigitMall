@@ -10,5 +10,5 @@ data class ItemDto(
     val price: String? = null,
     val category: String? = null,
     val image: String? = null,
-    val sizes: List<String>? = null
+    val sizes: List<String>? = null,
 )

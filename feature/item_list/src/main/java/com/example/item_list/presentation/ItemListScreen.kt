@@ -121,7 +121,6 @@ fun ItemListScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .fillMaxSize()
         ) {
 
             if (state.categories.isNotEmpty()) {
@@ -153,17 +152,31 @@ fun ItemListScreen(
                     )
                 }
             } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(Padding.padding16),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.space16)
-                ) {
-                    items(state.displayedItems) { item ->
-                        ShopItemRow(
-                            item = item,
-                            onAddToCart = { size ->
-                                viewModel.handleIntent(ItemListIntent.AddToCart(item, size))
-                            }
-                        )
+                if (state.displayedItems.isEmpty() && !state.isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("No items available", color = MallTheme.colors.textSecondary)
+                    }
+                } else {
+                    LazyColumn(
+                        contentPadding = PaddingValues(
+                            top = 2.dp,
+                            bottom = Padding.padding16,
+                            start = Padding.padding16,
+                            end = Padding.padding16
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(Spacing.space16)
+                    ) {
+                        items(state.displayedItems) { item ->
+                            ShopItemRow(
+                                item = item,
+                                onAddToCart = { size ->
+                                    viewModel.handleIntent(ItemListIntent.AddToCart(item, size))
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -188,9 +201,14 @@ fun ShopItemRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Padding.padding12),
+                .padding(
+                    start = Padding.padding12,
+                    end = Padding.padding12,
+                    bottom = Padding.padding12
+                ),
             verticalAlignment = Alignment.CenterVertically
-        ) {
+        )
+             {
             AsyncImage(
                 model = item.imageUrl,
                 contentDescription = item.name,
