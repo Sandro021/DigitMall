@@ -1,8 +1,6 @@
 package com.example.item_feed.presentation
 
 
-
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -127,7 +128,11 @@ fun AllItemsFeedScreen(
     ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(paddingValues)
+                .padding(
+                    start = paddingValues.calculateStartPadding(LayoutDirection.Ltr),
+                    end = paddingValues.calculateEndPadding(LayoutDirection.Ltr),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
                 .fillMaxSize()
         ) {
 
@@ -153,7 +158,7 @@ fun AllItemsFeedScreen(
                             label = { Text(category) },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = MallTheme.colors.brandPrimary,
-                                selectedLabelColor = MallTheme.colors.onBrandPrimary, // Usually white
+                                selectedLabelColor = MallTheme.colors.onBrandPrimary,
                                 labelColor = MallTheme.colors.textPrimary
                             )
                         )
@@ -200,7 +205,7 @@ fun AllItemsFeedScreen(
 fun AllItemGridCard(
     item: AllItemUi,
     onClick: () -> Unit,
-    onAddToCartClick: (AllItemUi) -> Unit // NEW: Added click listener parameter
+    onAddToCartClick: (AllItemUi) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -249,7 +254,7 @@ fun AllItemGridCard(
 
                     IconButton(
                         onClick = { onAddToCartClick(item) },
-                        modifier = Modifier.size(32.dp) // Keeps the icon compact
+                        modifier = Modifier.size(32.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.ShoppingCart,

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.feed.domain.model.Resource
 import com.example.feed.domain.usecase.GetCommentsUseCase
 import com.example.feed.domain.usecase.GetFeedUseCase
+import com.example.feed.domain.usecase.PostCommentUseCase
 import com.example.feed.domain.usecase.RankReelsUseCase
 import com.example.feed.domain.usecase.ToggleLikeUseCase
 import com.example.feed.domain.usecase.TrackInteractionUseCase
@@ -27,7 +28,8 @@ class FeedViewModel @Inject constructor(
     private val rankReelsUseCase: RankReelsUseCase,
     private val toggleLikeUseCase: ToggleLikeUseCase,
     private val trackInteractionUseCase: TrackInteractionUseCase,
-    private val getCommentsUseCase: GetCommentsUseCase
+    private val getCommentsUseCase: GetCommentsUseCase,
+    private val postCommentUseCase: PostCommentUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(FeedState())
@@ -52,6 +54,29 @@ class FeedViewModel @Inject constructor(
             is FeedEvent.OnWatchProgressChanged -> onWatchProgressChanged(event.reelId, event.percent)
             is FeedEvent.OnReelCompleted -> onReelCompleted(event.reelId)
             is FeedEvent.OnReturnedToPrevious -> onReturnedToPrevious(event.reelId)
+            is FeedEvent.OnPostComment -> postComment(event.reelId, event.text)
+        }
+    }
+
+    private fun postComment(reelId: String, text: String) {
+        viewModelScope.launch {
+            val trimmed = text.trim()
+            if (trimmed.isEmpty()) return@launch
+
+            val currentUserId = "user1"
+
+            when (val result = postCommentUseCase(reelId, currentUserId, trimmed)) {
+                is Resource.Success -> {
+                    _state.update { state ->
+                        val current = state.comments[reelId].orEmpty()
+                        state.copy(comments = state.comments + (reelId to (current + result.data)))
+                    }
+                }
+                is Resource.Error -> {
+                    _sideEffect.emit(FeedSideEffect.ShowSnackbar("Failed to post comment: ${result.message}"))
+                }
+                else -> Unit
+            }
         }
     }
 
@@ -116,20 +141,19 @@ class FeedViewModel @Inject constructor(
                 )
             }
 
-            // 2) API update
-//            val result = toggleLikeUseCase(reelId, newIsLiked, newLikesCount) // change your usecase signature
-//            if (result is Resource.Error) {
-//                // rollback on failure
-//                _sideEffect.emit(FeedSideEffect.ShowSnackbar("Failed to update like: ${result.message}"))
-//                _state.update { state ->
-//                    state.copy(
-//                        reels = state.reels.map {
-//                            if (it.reel.id == reelId) it.copy(reel = it.reel.copy(isLiked = currentIsLiked, likesCount = reel.likesCount))
-//                            else it
-//                        }
-//                    )
-//                }
-//            }
+            val result = toggleLikeUseCase(reelId, newIsLiked, newLikesCount) // change your usecase signature
+            if (result is Resource.Error) {
+                // rollback on failure
+                _sideEffect.emit(FeedSideEffect.ShowSnackbar("Failed to update like: ${result.message}"))
+                _state.update { state ->
+                    state.copy(
+                        reels = state.reels.map {
+                            if (it.reel.id == reelId) it.copy(reel = it.reel.copy(isLiked = currentIsLiked, likesCount = reel.likesCount))
+                            else it
+                        }
+                    )
+                }
+            }
         }
     }
 

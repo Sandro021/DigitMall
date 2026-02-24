@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.feed.presentation.utils.shareText
 import com.example.ui.R
 import com.example.ui.theme.MallTheme
 import com.example.ui.theme.Padding
@@ -38,6 +39,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun FeedScreen(
     viewModel: FeedViewModel = hiltViewModel()
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+
     MallTheme(darkTheme = true) {
         val state by viewModel.state.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }
@@ -135,9 +138,9 @@ fun FeedScreen(
                                     )
                                 },
                                 onShareClick = {
-                                    viewModel.handleEvent(
-                                        FeedEvent.OnShareClicked(reelWithAuthor.reel.id)
-                                    )
+                                    val r = reelWithAuthor.reel
+                                    val link = r.videoUrl.ifEmpty { r.coverUrl }
+                                    shareText(context, "Check this out: $link")
                                 },
                                 onProgressUpdate = { progress ->
                                     viewModel.handleEvent(
@@ -158,9 +161,8 @@ fun FeedScreen(
                     CommentsBottomSheet(
                         reelId = reelId,
                         comments = comments,
-                        onDismiss = {
-                            viewModel.handleEvent(FeedEvent.OnCommentsSheetDismissed)
-                        }
+                        onDismiss = { viewModel.handleEvent(FeedEvent.OnCommentsSheetDismissed) },
+                        onPost = { text -> viewModel.handleEvent(FeedEvent.OnPostComment(reelId, text)) }
                     )
                 }
             }

@@ -28,6 +28,9 @@ fun NavGraphBuilder.authGraph(
         WelcomeScreen(
             onLoginClick = { navController.navigate(LoginRoute) },
             onRegisterClick = { navController.navigate(RegisterRoute) },
+            onAlreadyLoggedIn = {
+                onAuthSuccess()
+            }
         )
     }
 

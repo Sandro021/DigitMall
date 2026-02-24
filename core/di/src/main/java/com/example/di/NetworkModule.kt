@@ -5,6 +5,8 @@ import com.example.auth.data.remote.service.ProfileApi
 import com.example.cart.data.remote.CartApiService
 import com.example.company_profile.data.remote.reels.ReelsApiService
 import com.example.company_profile.data.remote.shop.CompanyShopApiService
+import com.example.data.network.NetworkMonitor
+import com.example.data.network.NetworkMonitorImpl
 import com.example.feed.data.remote.service.FeedApi
 import com.example.item_feed.data.remote.AllItemApiService
 import com.example.item_list.data.remote.ItemApiService
@@ -101,4 +103,12 @@ object NetworkModule {
     @Singleton
     fun provideCompanyShopApiService(retrofit: Retrofit): CompanyShopApiService =
         retrofit.create(CompanyShopApiService::class.java)
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object NetworkModule {
+        @Provides
+        @Singleton
+        fun provideNetworkMonitor(impl: NetworkMonitorImpl): NetworkMonitor = impl
+    }
 }

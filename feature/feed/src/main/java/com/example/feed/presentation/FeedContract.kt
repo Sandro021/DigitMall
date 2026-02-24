@@ -24,6 +24,7 @@ sealed class FeedEvent {
     data class OnWatchProgressChanged(val reelId: String, val percent: Float) : FeedEvent()
     data class OnReelCompleted(val reelId: String) : FeedEvent()
     data class OnReturnedToPrevious(val reelId: String) : FeedEvent()
+    data class OnPostComment(val reelId: String, val text: String) : FeedEvent()
 }
 
 sealed class FeedSideEffect {

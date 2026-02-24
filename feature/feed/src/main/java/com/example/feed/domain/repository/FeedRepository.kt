@@ -11,4 +11,5 @@ interface FeedRepository {
     suspend fun getProfiles(): Resource<List<Profile>>
     suspend fun getComments(reelId: String): Resource<List<Comment>>
     suspend fun toggleLike(reelId: String, isLiked: Boolean): Resource<Reel>
+    suspend fun patchLike(reelId: String, isLiked: Boolean, likesCount: Int): Reel
 }

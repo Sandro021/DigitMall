@@ -44,6 +44,7 @@ fun CommentsBottomSheet(
     reelId: String,
     comments: List<Comment>,
     onDismiss: () -> Unit,
+    onPost: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var newCommentText by remember { mutableStateOf("") }
@@ -107,13 +108,11 @@ fun CommentsBottomSheet(
                 )
                 Button(
                     onClick = {
-                        // In a real app, this would call a use case to add comment
+                        onPost(newCommentText)
                         newCommentText = ""
                     },
                     enabled = newCommentText.isNotBlank()
-                ) {
-                    Text("Post")
-                }
+                ) { Text("Post") }
             }
         }
     }

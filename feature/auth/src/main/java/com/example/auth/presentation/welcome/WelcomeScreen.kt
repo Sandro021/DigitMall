@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,16 +22,28 @@ import com.example.ui.theme.VerticalSpacing
 import com.example.ui.theme.common.LoginButton
 import com.example.ui.theme.common.LogoCircle
 import com.example.ui.theme.common.RegisterButton
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun WelcomeScreen(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
+    onAlreadyLoggedIn: () -> Unit
 ) {
+    val auth = FirebaseAuth.getInstance()
+
+    LaunchedEffect(Unit) {
+        if (auth.currentUser != null) {
+            onAlreadyLoggedIn()
+        }
+    }
+
+
     WelcomeScreenContent(
         onLoginClick = onLoginClick,
         onRegisterClick = onRegisterClick
     )
+
 }
 
 @Composable

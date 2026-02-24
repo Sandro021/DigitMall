@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.digitmall.navigation.AppNavigation
+import com.example.digitmall.ui.theme.AppRoot
 import com.example.ui.theme.MallTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MallTheme {
-                AppNavigation()
+                AppRoot()
 
             }
         }

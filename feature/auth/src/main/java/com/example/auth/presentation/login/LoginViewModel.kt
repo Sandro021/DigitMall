@@ -40,29 +40,48 @@ class LoginViewModel @Inject constructor(
         val pass = _state.value.password
 
         var hasError = false
+
         if (email.isBlank()) {
             hasError = true
             _state.update { it.copy(emailError = "Email can't be empty") }
         }
+
         if (pass.isBlank()) {
             hasError = true
             _state.update { it.copy(passwordError = "Password can't be empty") }
         }
+
         if (hasError) return
 
         viewModelScope.launch {
-            try {
-                _state.update { it.copy(isLoading = true) }
+            _state.update { it.copy(isLoading = true) }
 
-                val profile = loginUseCase(email, pass)
-                // ✅ you can store profile.id / profile.accountType in DataStore later
+            try {
+                loginUseCase(email, pass)
 
                 _state.update { it.copy(isLoading = false) }
                 _sideEffect.send(LoginSideEffect.NavigateHome)
 
-            } catch (e: Exception) {
+            } catch (e: com.google.firebase.auth.FirebaseAuthInvalidCredentialsException) {
+
                 _state.update { it.copy(isLoading = false) }
-                _sideEffect.send(LoginSideEffect.ShowMessage(e.message ?: "Login failed"))
+                _state.update {
+                    it.copy(passwordError = "Incorrect email or password")
+                }
+
+            } catch (e: com.google.firebase.auth.FirebaseAuthInvalidUserException) {
+
+                _state.update { it.copy(isLoading = false) }
+                _state.update {
+                    it.copy(passwordError = "Incorrect email or password")
+                }
+
+            } catch (e: Exception) {
+
+                _state.update { it.copy(isLoading = false) }
+                _sideEffect.send(
+                    LoginSideEffect.ShowMessage("Something went wrong")
+                )
             }
         }
     }

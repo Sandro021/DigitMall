@@ -29,7 +29,9 @@ fun ProfileWrapperScreen(
     } else {
         when (profile!!.accountType) {
             AccountType.BUSINESS -> {
-                CompanyProfileScreen(onBack = onBack)
+                CompanyProfileScreen(
+                    onBack = onBack,
+                )
             }
 
             AccountType.USER -> {

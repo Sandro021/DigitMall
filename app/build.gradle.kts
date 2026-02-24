@@ -66,19 +66,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     implementation("androidx.compose.material:material-icons-extended")
-
-    //hilt
     implementation("com.google.dagger:hilt-android:2.57.2")
     ksp("com.google.dagger:hilt-android-compiler:2.57.2")
 
-    //navigation
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2")) // Or latest version
-
-    // 2. Add the SDKs you need.
-    // Notice how you DO NOT need to put version numbers here! The BoM handles it.
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
@@ -95,6 +89,7 @@ dependencies {
     implementation(projects.feature.profile)
     implementation(projects.feature.companyProfile)
     implementation(projects.core.data)
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
 
 }

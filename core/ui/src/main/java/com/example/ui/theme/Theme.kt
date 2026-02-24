@@ -26,7 +26,7 @@ private val LightMallColors = MallColors(
     error = Color(0xFFD32F2F)
 )
 
-private val DarkMallColors = MallColors(
+val DarkMallColors = MallColors(
     brandPrimary = Color(0xFFF8F9FB),
     onBrandPrimary = Color(0xFF000000),
     brandSecondary = Color(0xFFFF8A65),

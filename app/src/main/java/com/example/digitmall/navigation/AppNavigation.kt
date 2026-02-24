@@ -30,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.auth.navigation.WelcomeRoute
 import com.example.auth.navigation.authGraph
+import com.example.auth.presentation.welcome.WelcomeScreen
 import com.example.cart.presentation.navigation.CartRoute
 import com.example.cart.presentation.navigation.cartNavGraph
 import com.example.company_profile.presentation.navigation.companyProfileNavGraph
@@ -97,9 +98,9 @@ fun AppNavigation() {
                             icon = { Icon(tab.icon, contentDescription = tab.label) },
 
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = MallTheme.colors.brandSecondary,
-                                selectedTextColor = MallTheme.colors.brandSecondary,
-                                indicatorColor = MallTheme.colors.brandSecondary.copy(alpha = 0.15f),
+                                selectedIconColor = MallTheme.colors.brandPrimary,
+                                selectedTextColor = MallTheme.colors.brandPrimary,
+                                indicatorColor = MallTheme.colors.brandPrimary.copy(alpha = 0.15f),
                                 unselectedIconColor = MallTheme.colors.textSecondary,
                                 unselectedTextColor = MallTheme.colors.textSecondary
                             ),
@@ -132,12 +133,34 @@ fun AppNavigation() {
                     }
                 }
             )
-            dynamicProfileNavGraph(onBackClick = { navController.popBackStack() })
+            dynamicProfileNavGraph(
+                onBackClick = {
+                    navController.navigate(WelcomeRoute) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
 
-            companyProfileNavGraph(onBackClick = { navController.popBackStack() })
+            companyProfileNavGraph(
+                onBackClick = {
+                    navController.navigate(WelcomeRoute) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
 
             profileNavGraph(
-                onBackClick = { navController.popBackStack() }
+                onBackClick =  {
+                    navController.navigate(WelcomeRoute) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
             allItemsNavGraph { }
 

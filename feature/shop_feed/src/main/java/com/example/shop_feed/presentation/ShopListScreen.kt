@@ -69,7 +69,9 @@ fun ShopListScreen(
             Box(modifier = Modifier.weight(1f)) {
                 if (state.isLoading) {
                     LogoLoader(
-                        modifier = Modifier.align(Alignment.Center),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .fillMaxSize(),
                         size = 92.dp,
                         logoRes = com.example.ui.R.drawable.logo
                     )

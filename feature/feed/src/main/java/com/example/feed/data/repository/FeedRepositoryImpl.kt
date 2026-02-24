@@ -1,5 +1,6 @@
 package com.example.feed.data.repository
 
+import com.example.feed.data.remote.dto.LikePatchBody
 import com.example.feed.data.remote.mapper.toDomain
 import com.example.feed.data.remote.service.FeedApi
 import com.example.feed.domain.model.Comment
@@ -61,5 +62,10 @@ class FeedRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Resource.Error("Failed to toggle like: ${e.message}", e)
         }
+    }
+
+    override suspend fun patchLike(reelId: String, isLiked: Boolean, likesCount: Int): Reel {
+        val dto = api.patchLike(reelId, LikePatchBody(isLiked, likesCount))
+        return dto.toDomain()
     }
 }
