@@ -2,7 +2,6 @@ package com.example.item.data.remote.mapper
 
 import com.example.item.data.remote.dto.ItemDto
 import com.example.item.domain.model.Item
-import kotlin.collections.ifEmpty
 
 fun ItemDto.toDomain(): Item = Item(
     id = id,
@@ -11,5 +10,5 @@ fun ItemDto.toDomain(): Item = Item(
     image = image,
     category = category,
     shopId = shopId,
-    sizes = sizes // ✅ map correctly
+    sizes = sizes
 )

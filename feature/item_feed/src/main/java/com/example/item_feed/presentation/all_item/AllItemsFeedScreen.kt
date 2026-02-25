@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.item_feed.domain.model.SortOrder
-import com.example.item_feed.presentation.all_item.AllItemsViewModel
 import com.example.item_feed.presentation.all_item.contract.AllItemsIntent
 import com.example.item_feed.presentation.all_item.model.AllItemUi
 import com.example.ui.R

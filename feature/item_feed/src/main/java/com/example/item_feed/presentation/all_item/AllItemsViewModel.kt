@@ -1,6 +1,5 @@
 package com.example.item_feed.presentation.all_item
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.CurrentUserProvider

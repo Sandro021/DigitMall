@@ -1,6 +1,5 @@
 package com.example.item.presentation
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.item.data.remote.dto.CartDto
 import com.example.item.domain.model.Resource

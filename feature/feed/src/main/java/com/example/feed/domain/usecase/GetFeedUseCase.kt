@@ -7,8 +7,7 @@ import com.example.feed.domain.model.Resource
 import com.example.feed.domain.repository.FeedRepository
 import javax.inject.Inject
 import kotlin.collections.associateBy
-import kotlin.collections.mapNotNull
-import kotlin.let
+
 
 class GetFeedUseCase @Inject constructor(
     private val repository: FeedRepository
