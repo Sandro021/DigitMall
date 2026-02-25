@@ -55,7 +55,7 @@ fun LoginScreen(
                 LoginSideEffect.NavigateBack -> onBack()
                 LoginSideEffect.NavigateHome -> onSuccess()
                 is LoginSideEffect.ShowMessage -> {
-                    // show snackbar/toast if you want
+
                 }
             }
         }
@@ -156,7 +156,7 @@ private fun LoginScreenContent(
             painter = painterResource(com.example.ui.R.drawable.back),
             contentDescription = "Back button",
             tint = cs.onBackground,
-            modifier = Modifier.padding(Padding.padding20)
+            modifier = Modifier.padding(horizontal = Padding.padding20)
                 .size(30.dp)
                 .clickable { onEvent(LoginEvent.BackClicked) }
         )

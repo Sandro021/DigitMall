@@ -14,4 +14,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     implementation(projects.core.ui)
+    implementation(projects.feature.shopFeed)
 }

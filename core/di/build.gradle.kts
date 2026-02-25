@@ -38,5 +38,6 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.feature.profile)
     implementation(projects.feature.companyProfile)
+    implementation(projects.feature.item)
 
 }

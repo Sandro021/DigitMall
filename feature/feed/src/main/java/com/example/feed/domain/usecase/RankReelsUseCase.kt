@@ -30,7 +30,6 @@ class RankReelsUseCase @Inject constructor(
             reelWithAuthor to score
         }.sortedByDescending { it.second }
 
-        // Apply diversity: don't show same author back-to-back more than 2 times
         return applyDiversity(scoredReels.map { it.first })
     }
 
@@ -40,29 +39,24 @@ class RankReelsUseCase @Inject constructor(
         hashtagScores: Map<String, Float>,
         authorId: String
     ): Float {
-        var score = 100f // Base score
+        var score = 100f
 
-        // Hashtag interest scores
         reel.hashtags.forEach { hashtag ->
             score += hashtagScores[hashtag] ?: 0f
         }
 
-        // Like boost
         if (interaction?.liked == true) {
             score += 50f
         }
 
-        // Completion boost
         if (interaction?.completedWatch == true) {
             score += 30f
         }
 
-        // Returned to previous boost (strong interest signal)
         if (interaction?.returnedToPrevious == true) {
             score += 40f
         }
 
-        // Recency boost (more recent = higher score)
         val daysSinceCreation = (System.currentTimeMillis() - reel.createdAt) / (1000 * 60 * 60 * 24)
         score += (30f / (1 + daysSinceCreation)).coerceAtMost(30f)
 
@@ -79,7 +73,6 @@ class RankReelsUseCase @Inject constructor(
             val authorId = reel.author.id
             val count = authorCounts[authorId] ?: 0
 
-            // Allow same author up to 2 times in a row, then skip
             if (count < 2 || result.isEmpty() || result.last().author.id != authorId) {
                 result.add(reel)
                 if (result.size > 1 && result[result.size - 2].author.id == authorId) {

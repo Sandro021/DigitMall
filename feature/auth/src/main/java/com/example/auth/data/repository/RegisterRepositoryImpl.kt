@@ -25,21 +25,19 @@ class RegisterRepositoryImpl @Inject constructor(
         location: String?,
         description: String?
     ) {
-        // 1) Firebase create user
         firebaseAuth.createUserWithEmailAndPassword(email, password).await()
 
         val uid = firebaseAuth.currentUser?.uid
             ?: throw kotlin.IllegalStateException("Firebase uid is null after register")
 
-        // 2) Save profile in MockAPI
-        val username = email.substringBefore("@") // Generate username from email
+        val username = email.substringBefore("@")
         val dto = ProfileDto(
             id = uid,
             firebaseUid = uid,
             email = email,
             accountType = accountType.name,
             username = username,
-            avatarUrl = "https://via.placeholder.com/150", // Default avatar
+            avatarUrl = "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=1024x1024&w=is&k=20&c=oGqYHhfkz_ifeE6-dID6aM7bLz38C6vQTy1YcbgZfx8=",
             firstName = userFirstName,
             lastName = userLastName,
             phone = phone,

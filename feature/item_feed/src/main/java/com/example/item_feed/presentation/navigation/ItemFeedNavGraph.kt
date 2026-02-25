@@ -5,16 +5,17 @@ import androidx.navigation.compose.composable
 import com.example.item_feed.presentation.all_item.AllItemsFeedScreen
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data object AllItemsRoute
 
 fun NavGraphBuilder.allItemsNavGraph(
-    onItemClick: (String) -> Unit
+    onItemClick: (shopId: String, itemId: String) -> Unit
 ) {
     composable<AllItemsRoute> {
         AllItemsFeedScreen(
-            onItemClick = onItemClick
+            onItemClick = { shopId, itemId ->
+                onItemClick(shopId, itemId)
+            }
         )
     }
 }

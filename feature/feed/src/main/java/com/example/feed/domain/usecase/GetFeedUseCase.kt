@@ -32,7 +32,7 @@ class GetFeedUseCase @Inject constructor(
 
 
                     val author = profilesMap[reel.authorProfileId]
-                        ?: createFallbackProfile(reel.authorProfileId) // Provide a fallback if missing!
+                        ?: createFallbackProfile(reel.authorProfileId)
 
                     ReelWithAuthor(reel = reel, author = author)
                 }

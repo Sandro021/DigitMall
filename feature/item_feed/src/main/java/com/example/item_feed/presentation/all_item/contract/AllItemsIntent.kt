@@ -11,4 +11,5 @@ sealed class AllItemsIntent {
     data class AddToCart(val item: AllItemUi) : AllItemsIntent()
 
     data object ClearCartMessage : AllItemsIntent()
+    data class SelectShop(val shopId: String) : AllItemsIntent()
 }

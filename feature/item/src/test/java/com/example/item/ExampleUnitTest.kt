@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.item
 
 import org.junit.Test
 

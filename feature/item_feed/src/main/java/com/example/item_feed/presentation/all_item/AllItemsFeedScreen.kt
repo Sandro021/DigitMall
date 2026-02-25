@@ -66,7 +66,7 @@ import com.example.ui.theme.common.LogoLoader
 @Composable
 fun AllItemsFeedScreen(
     viewModel: AllItemsViewModel = hiltViewModel(),
-    onItemClick: (String) -> Unit
+    onItemClick: (shopId: String, itemId: String) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     var showSortMenu by remember { mutableStateOf(false) }
@@ -190,9 +190,8 @@ fun AllItemsFeedScreen(
                     items(state.items) { item ->
                         AllItemGridCard(
                             item = item,
-                            onClick = { onItemClick(item.id) },
+                            onClick = { onItemClick(item.shopId, item.id) },
                             onAddToCartClick = { clickedItem ->
-                                // NEW: Send the intent to your ViewModel
                                 viewModel.handleIntent(AllItemsIntent.AddToCart(clickedItem))
                             }
                         )
@@ -242,7 +241,6 @@ fun AllItemGridCard(
                 )
                 Spacer(modifier = Modifier.height(Spacing.space4))
 
-                // NEW: Row to hold Price on the left, Cart icon on the right
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

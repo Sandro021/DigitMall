@@ -51,43 +51,35 @@ class AllItemsViewModel @Inject constructor(
                 fetchItems()
             }
 
-            is AllItemsIntent.AddToCart -> {
-                addToCart(intent.item)
-            }
+            is AllItemsIntent.AddToCart -> addToCart(intent.item)
 
-            is AllItemsIntent.ClearCartMessage -> {
-                _state.update { it.copy(cartMessage = null) }
+            is AllItemsIntent.ClearCartMessage -> _state.update { it.copy(cartMessage = null) }
+
+            is AllItemsIntent.SelectShop -> {
+                _state.update { it.copy(selectedShopId = intent.shopId) }
+                fetchItems()
             }
         }
     }
 
     private fun fetchItems() {
         viewModelScope.launch {
-            val currentState = _state.value
-
             getAllItemsUseCase(
-                categoryFilter = currentState.selectedCategory,
-                sortOrder = currentState.sortOrder
+                shopId = null,
+                categoryFilter = _state.value.selectedCategory,
+                sortOrder = _state.value.sortOrder
             )
                 .onStart { _state.update { it.copy(isLoading = true, error = null) } }
-                .catch { e ->
-                    Log.e("API_CRASH", "CRASH REASON: ${e.message}", e)
-
-                    _state.update { it.copy(isLoading = false, error = e.message) }
-                }
+                .catch { e -> _state.update { it.copy(isLoading = false, error = e.message) } }
                 .collect { domainItems ->
-
-                    Log.d("API_SUCCESS", "Successfully downloaded ${domainItems.size} items!")
                     currentDomainItems = domainItems
-
                     val uniqueCategories = domainItems.map { it.category }.distinct()
                     val allCategories = listOf("All") + uniqueCategories
-
                     _state.update {
                         it.copy(
                             isLoading = false,
                             items = domainItems.map { item -> item.toUiModel() },
-                            categories = if (currentState.selectedCategory == "All") allCategories else it.categories
+                            categories = if (_state.value.selectedCategory == "All") allCategories else it.categories
                         )
                     }
                 }

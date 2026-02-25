@@ -39,7 +39,7 @@ fun VideoPlayer(
                 exoPlayer.setMediaItem(mediaItem)
                 exoPlayer.prepare()
             } catch (e: Exception) {
-                // Handle error - video will show placeholder
+
             }
         }
     }
@@ -50,7 +50,7 @@ fun VideoPlayer(
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(100) // Update every 100ms
+            delay(100)
             val duration = exoPlayer.duration
             val position = exoPlayer.currentPosition
             if (duration > 0) {

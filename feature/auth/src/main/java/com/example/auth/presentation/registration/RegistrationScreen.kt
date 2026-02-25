@@ -3,6 +3,8 @@ package com.example.auth.presentation.registration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -39,7 +41,7 @@ fun RegistrationScreen(
     val state by viewModel.state.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()   //// mxolod droebitt
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
@@ -48,7 +50,7 @@ fun RegistrationScreen(
                 RegistrationSideEffect.NavigateHome -> onSuccess()
                 is RegistrationSideEffect.ShowMessage -> {
                     scope.launch {
-                        snackbarHostState.showSnackbar("Registered Successfully") // mxolod droebit
+                        snackbarHostState.showSnackbar("Registered Successfully")
                     }
                 }
             }
@@ -76,17 +78,16 @@ private fun RegistrationScreenContent(
             .background(cs.background)
     ) {
 
-        // ✅ CONTENT FIRST (so switch can be drawn on top)
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(cs.background)
-                .padding(top = 150.dp),
-            verticalArrangement = Arrangement.Top,
+                .verticalScroll(rememberScrollState())
+                .padding(top = 90.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing10))
+            Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing40))
 
             IconTextField(
                 value = state.email,
@@ -97,9 +98,9 @@ private fun RegistrationScreenContent(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             )
-            if (state.emailError != null) {
+            state.emailError?.let {
                 Text(
-                    state.emailError,
+                    it,
                     modifier = Modifier.padding(horizontal = Padding.padding20),
                     color = cs.error
                 )
@@ -117,9 +118,9 @@ private fun RegistrationScreenContent(
                 imeAction = ImeAction.Next,
                 visualTransformation = PasswordVisualTransformation()
             )
-            if (state.passwordError != null) {
+            state.passwordError?.let {
                 Text(
-                    state.passwordError,
+                    it,
                     modifier = Modifier.padding(horizontal = Padding.padding20),
                     color = cs.error
                 )
@@ -137,9 +138,9 @@ private fun RegistrationScreenContent(
                 imeAction = ImeAction.Next,
                 visualTransformation = PasswordVisualTransformation()
             )
-            if (state.repeatPasswordError != null) {
+            state.repeatPasswordError?.let {
                 Text(
-                    state.repeatPasswordError,
+                    it,
                     modifier = Modifier.padding(horizontal = Padding.padding20),
                     color = cs.error
                 )
@@ -148,6 +149,7 @@ private fun RegistrationScreenContent(
             Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
 
             if (state.accountType == AccountType.USER) {
+
                 IconTextField(
                     value = state.firstName,
                     onValueChange = { onEvent(RegistrationEvent.FirstNameChanged(it)) },
@@ -156,12 +158,8 @@ private fun RegistrationScreenContent(
                     placeholderText = "First name",
                     imeAction = ImeAction.Next
                 )
-                if (state.firstNameError != null) {
-                    Text(
-                        state.firstNameError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.firstNameError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
 
                 Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
@@ -174,12 +172,8 @@ private fun RegistrationScreenContent(
                     placeholderText = "Last name",
                     imeAction = ImeAction.Next
                 )
-                if (state.lastNameError != null) {
-                    Text(
-                        state.lastNameError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.lastNameError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
 
                 Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
@@ -187,8 +181,7 @@ private fun RegistrationScreenContent(
                 IconTextField(
                     value = state.phone,
                     onValueChange = { input ->
-                        val filtered = input.filter { it.isDigit() } // only numbers
-                        onEvent(RegistrationEvent.PhoneChanged(filtered))
+                        onEvent(RegistrationEvent.PhoneChanged(input.filter { it.isDigit() }))
                     },
                     labelText = "Phone",
                     leadingIconRes = com.example.ui.R.drawable.phone,
@@ -196,16 +189,13 @@ private fun RegistrationScreenContent(
                     keyboardType = KeyboardType.Phone,
                     imeAction = ImeAction.Done
                 )
-                if (state.phoneError != null) {
-                    Text(
-                        state.phoneError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.phoneError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
             }
 
             if (state.accountType == AccountType.BUSINESS) {
+
                 IconTextField(
                     value = state.companyName,
                     onValueChange = { onEvent(RegistrationEvent.CompanyNameChanged(it)) },
@@ -214,12 +204,8 @@ private fun RegistrationScreenContent(
                     placeholderText = "DigitMall Store",
                     imeAction = ImeAction.Next
                 )
-                if (state.companyNameError != null) {
-                    Text(
-                        state.companyNameError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.companyNameError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
 
                 Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
@@ -227,8 +213,7 @@ private fun RegistrationScreenContent(
                 IconTextField(
                     value = state.phone,
                     onValueChange = { input ->
-                        val filtered = input.filter { it.isDigit() } // only numbers
-                        onEvent(RegistrationEvent.PhoneChanged(filtered))
+                        onEvent(RegistrationEvent.PhoneChanged(input.filter { it.isDigit() }))
                     },
                     labelText = "Phone",
                     leadingIconRes = com.example.ui.R.drawable.phone,
@@ -236,12 +221,8 @@ private fun RegistrationScreenContent(
                     keyboardType = KeyboardType.Phone,
                     imeAction = ImeAction.Next,
                 )
-                if (state.phoneError != null) {
-                    Text(
-                        state.phoneError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.phoneError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
 
                 Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
@@ -254,12 +235,8 @@ private fun RegistrationScreenContent(
                     placeholderText = "Tbilisi",
                     imeAction = ImeAction.Next
                 )
-                if (state.locationError != null) {
-                    Text(
-                        state.locationError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.locationError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
 
                 Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
@@ -272,24 +249,21 @@ private fun RegistrationScreenContent(
                     placeholderText = "What do you sell?",
                     imeAction = ImeAction.Done
                 )
-                if (state.descriptionError != null) {
-                    Text(
-                        state.descriptionError,
-                        modifier = Modifier.padding(horizontal = Padding.padding20),
-                        color = cs.error
-                    )
+                state.descriptionError?.let {
+                    Text(it, Modifier.padding(horizontal = Padding.padding20), cs.error)
                 }
             }
 
-            Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing30))
+            Spacer(modifier = Modifier.height(VerticalSpacing.verticalSpacing20))
 
             RegisterButton(
                 text = "Register",
                 onClick = { onEvent(RegistrationEvent.RegisterClicked) }
             )
+
+            Spacer(modifier = Modifier.height(2.dp))
         }
 
-        // ✅ Back icon on top
         Icon(
             painter = painterResource(com.example.ui.R.drawable.back),
             contentDescription = "Back button",
@@ -301,7 +275,6 @@ private fun RegistrationScreenContent(
                 .clickable { onEvent(RegistrationEvent.BackClicked) }
         )
 
-        // ✅ Switch drawn LAST so it stays visible on top
         AccountTypeSwitch(
             selected = state.accountType,
             onSelect = { onEvent(RegistrationEvent.AccountTypeChanged(it)) },

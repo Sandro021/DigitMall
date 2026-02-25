@@ -28,9 +28,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.auth.navigation.SplashRoute
 import com.example.auth.navigation.WelcomeRoute
 import com.example.auth.navigation.authGraph
-import com.example.auth.presentation.welcome.WelcomeScreen
 import com.example.cart.presentation.navigation.CartRoute
 import com.example.cart.presentation.navigation.cartNavGraph
 import com.example.company_profile.presentation.navigation.companyProfileNavGraph
@@ -38,6 +38,7 @@ import com.example.digitmall.dynamic_profile.navigation.DynamicProfileRoute
 import com.example.digitmall.dynamic_profile.navigation.dynamicProfileNavGraph
 import com.example.feed.navigation.FeedRoute
 import com.example.feed.navigation.feedNavGraph
+import com.example.item.navigation.itemNavGraph
 import com.example.item_feed.presentation.navigation.AllItemsRoute
 import com.example.item_feed.presentation.navigation.allItemsNavGraph
 import com.example.item_list.presentation.navigation.ItemListRoute
@@ -122,7 +123,7 @@ fun AppNavigation() {
 
         NavHost(
             navController = navController,
-            startDestination = WelcomeRoute,
+            startDestination = SplashRoute,
             modifier = Modifier.padding(paddingValues)
         ) {
             authGraph(
@@ -162,7 +163,12 @@ fun AppNavigation() {
                     }
                 }
             )
-            allItemsNavGraph { }
+
+            allItemsNavGraph(
+                onItemClick = { shopId: String, itemId: String ->
+                    navController.navigate("item_screen/$shopId/$itemId")
+                }
+            )
 
             shopListNavGraph(
                 onNavigateToItems = { shopId ->
@@ -200,6 +206,11 @@ fun AppNavigation() {
             )
 
             feedNavGraph()
+
+            itemNavGraph(
+                onBack = { navController.popBackStack() }
+            )
+
         }
     }
 }

@@ -39,7 +39,6 @@ import com.example.ui.theme.MallTheme
 import com.example.ui.theme.Padding
 import com.example.ui.theme.Radius
 import com.example.ui.theme.Spacing
-import com.example.ui.theme.common.LogoLoader
 
 @Composable
 fun ShopListScreen(
@@ -67,16 +66,6 @@ fun ShopListScreen(
             )
 
             Box(modifier = Modifier.weight(1f)) {
-                if (state.isLoading) {
-                    LogoLoader(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .fillMaxSize(),
-                        size = 92.dp,
-                        logoRes = com.example.ui.R.drawable.logo
-                    )
-                }
-
                 if (state.error != null) {
                     Text(
                         text = "Error: ${state.error}",

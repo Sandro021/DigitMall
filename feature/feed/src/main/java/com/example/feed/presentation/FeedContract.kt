@@ -9,8 +9,8 @@ data class FeedState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val comments: Map<String, List<Comment>> = emptyMap(),
-    val showCommentsSheet: String? = null, // reelId if sheet is open
-    val watchProgress: Map<String, Float> = emptyMap() // reelId -> watched percent (0..1)
+    val showCommentsSheet: String? = null,
+    val watchProgress: Map<String, Float> = emptyMap()
 )
 
 sealed class FeedEvent {

@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
@@ -21,12 +20,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.loader.content.Loader
 import coil.compose.AsyncImage
 import com.example.profile.R
 import com.example.profile.presentation.contract.ProfileEffect
 import com.example.profile.presentation.contract.ProfileIntent
-import com.example.ui.theme.MallTheme // Ensure this import matches your project structure
+import com.example.ui.theme.MallTheme
 import com.example.ui.theme.Padding
 import com.example.ui.theme.common.LogoLoader
 import com.google.firebase.auth.FirebaseAuth
@@ -68,15 +66,12 @@ fun ProfileScreen(
                     containerColor = MallTheme.colors.background
                 ),
                 actions = {
-                    // Logout button
                     IconButton(onClick = {
-                        // Sign out from Firebase
                         FirebaseAuth.getInstance().signOut()
-                        // Navigate back / to welcome screen
-                        onNavigateBack
+                        onNavigateBack()
                     }) {
                         Icon(
-                            imageVector = Icons.Default.ExitToApp, // you may need: androidx.compose.material.icons.filled.ExitToApp
+                            imageVector = Icons.Default.ExitToApp,
                             contentDescription = "Logout",
                             tint = MallTheme.colors.brandPrimary
                         )

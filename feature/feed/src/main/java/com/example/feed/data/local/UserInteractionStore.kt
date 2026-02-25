@@ -101,7 +101,6 @@ class UserInteractionStore @Inject constructor(
     suspend fun getAllInteractions(): Flow<Map<String, UserInteraction>> {
         return dataStore.data.map { preferences ->
             val interactions = mutableMapOf<String, UserInteraction>()
-            // Extract all reel IDs from preferences
             val reelIds = preferences.asMap().keys
                 .mapNotNull { key ->
                     when {

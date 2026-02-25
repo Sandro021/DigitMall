@@ -8,5 +8,6 @@ fun Item.toUiModel() = AllItemUi(
     name = name,
     displayPrice = price,
     category = category,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    shopId = shopId
 )

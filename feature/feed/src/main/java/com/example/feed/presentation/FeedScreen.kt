@@ -45,7 +45,6 @@ fun FeedScreen(
         val state by viewModel.state.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }
 
-        // Handle side effects
         LaunchedEffect(Unit) {
             viewModel.sideEffect.collectLatest { effect ->
                 when (effect) {
@@ -53,7 +52,6 @@ fun FeedScreen(
                         snackbarHostState.showSnackbar(effect.message)
                     }
                     is FeedSideEffect.NavigateTo -> {
-                        // Handle navigation if needed
                     }
                 }
             }
@@ -83,7 +81,6 @@ fun FeedScreen(
                     }
 
                     state.error != null && state.reels.isEmpty() -> {
-                        // Error state
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -155,7 +152,6 @@ fun FeedScreen(
                     }
                 }
 
-                // Comments bottom sheet
                 state.showCommentsSheet?.let { reelId ->
                     val comments = state.comments[reelId] ?: emptyList()
                     CommentsBottomSheet(

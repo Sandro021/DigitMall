@@ -63,7 +63,7 @@ class FeedViewModel @Inject constructor(
             val trimmed = text.trim()
             if (trimmed.isEmpty()) return@launch
 
-            val currentUserId = "user1"
+            val currentUserId = "test"
 
             when (val result = postCommentUseCase(reelId, currentUserId, trimmed)) {
                 is Resource.Success -> {

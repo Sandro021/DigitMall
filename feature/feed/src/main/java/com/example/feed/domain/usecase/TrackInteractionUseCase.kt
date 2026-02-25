@@ -16,7 +16,7 @@ class TrackInteractionUseCase @Inject constructor(
         interactionStore.markCompletedWatch(reelId)
         // Update hashtag scores when completing watch
         reel.hashtags.forEach { hashtag ->
-            interactionStore.updateHashtagScore(hashtag, 5f) // +5 per hashtag on completion
+            interactionStore.updateHashtagScore(hashtag, 5f)
         }
     }
 
@@ -24,7 +24,7 @@ class TrackInteractionUseCase @Inject constructor(
         interactionStore.markLiked(reelId)
         // Update hashtag scores when liking
         reel.hashtags.forEach { hashtag ->
-            interactionStore.updateHashtagScore(hashtag, 10f) // +10 per hashtag on like
+            interactionStore.updateHashtagScore(hashtag, 10f)
         }
     }
 
@@ -36,7 +36,7 @@ class TrackInteractionUseCase @Inject constructor(
         interactionStore.markReturnedToPrevious(reelId)
         // Update hashtag scores when returning (strong interest)
         reel.hashtags.forEach { hashtag ->
-            interactionStore.updateHashtagScore(hashtag, 15f) // +15 per hashtag on return
+            interactionStore.updateHashtagScore(hashtag, 15f)
         }
     }
 }

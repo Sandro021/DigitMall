@@ -9,17 +9,14 @@ data class RegistrationState(
     val password: String = "",
     val repeatPassword: String = "",
 
-    // USER
     val firstName: String = "",
     val lastName: String = "",
     val phone: String = "",
 
-    // BUSINESS
     val companyName: String = "",
     val location: String = "",
     val description: String = "",
 
-    // errors
     val emailError: String? = null,
     val passwordError: String? = null,
     val repeatPasswordError: String? = null,

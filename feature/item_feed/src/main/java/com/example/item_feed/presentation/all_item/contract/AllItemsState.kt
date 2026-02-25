@@ -10,5 +10,7 @@ data class AllItemsState(
     val selectedCategory: String = "All",
     val sortOrder: SortOrder = SortOrder.NONE,
     val error: String? = null,
-    val cartMessage: String? = null
+    val cartMessage: String? = null,
+    val selectedShopId: String? = null
+
 )

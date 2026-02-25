@@ -5,5 +5,6 @@ data class AllItemUi(
     val name: String,
     val displayPrice: String,
     val category: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val shopId: String
 )

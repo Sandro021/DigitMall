@@ -91,7 +91,6 @@ fun CommentsBottomSheet(
                 }
             }
 
-            // Add comment section
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -129,12 +128,11 @@ private fun CommentItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Padding.padding16),
+                .padding(Padding.padding12),
             horizontalArrangement = Arrangement.spacedBy(Padding.padding8)
         ) {
-            // Placeholder avatar
             AsyncImage(
-                model = "https://via.placeholder.com/40",
+                model = "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=1024x1024&w=is&k=20&c=oGqYHhfkz_ifeE6-dID6aM7bLz38C6vQTy1YcbgZfx8=",
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
@@ -142,12 +140,14 @@ private fun CommentItem(
                 contentScale = ContentScale.Crop
             )
 
+            Spacer(Modifier.padding(5.dp))
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(VerticalSpacing.s4)
             ) {
                 Text(
-                    text = "User ${comment.authorProfileId}",
+                    text = comment.authorProfileId,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )

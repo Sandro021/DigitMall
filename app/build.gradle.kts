@@ -76,6 +76,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
 
     implementation(projects.feature.shopFeed)
     implementation(projects.core.di)
@@ -89,7 +91,6 @@ dependencies {
     implementation(projects.feature.profile)
     implementation(projects.feature.companyProfile)
     implementation(projects.core.data)
-    implementation("androidx.core:core-splashscreen:1.0.1")
-
+    implementation(projects.feature.item)
 
 }

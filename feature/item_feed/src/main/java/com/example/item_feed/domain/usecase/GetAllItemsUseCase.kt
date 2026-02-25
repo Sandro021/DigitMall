@@ -11,16 +11,23 @@ class GetAllItemsUseCase @Inject constructor(
     private val repository: AllItemsRepository
 ) {
     operator fun invoke(
+        shopId: String? = null,               // <-- NEW
         categoryFilter: String? = null,
         sortOrder: SortOrder = SortOrder.NONE
     ): Flow<List<Item>> = flow {
-
         var processedList = repository.getAllItems()
 
+        // Filter by shopId
+        if (!shopId.isNullOrBlank()) {
+            processedList = processedList.filter { it.shopId == shopId }
+        }
+
+        // Filter by category
         if (!categoryFilter.isNullOrBlank() && categoryFilter != "All") {
             processedList = processedList.filter { it.category == categoryFilter }
         }
 
+        // Sort
         processedList = when (sortOrder) {
             SortOrder.PRICE_LOW_TO_HIGH -> processedList.sortedBy { it.price }
             SortOrder.PRICE_HIGH_TO_LOW -> processedList.sortedByDescending { it.price }

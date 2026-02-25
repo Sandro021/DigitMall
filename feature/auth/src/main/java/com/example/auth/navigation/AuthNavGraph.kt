@@ -5,10 +5,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.auth.presentation.login.LoginScreen
 import com.example.auth.presentation.registration.RegistrationScreen
+import com.example.auth.presentation.splash.SplashScreen
 import com.example.auth.presentation.welcome.WelcomeScreen
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.serialization.Serializable
 
-
+@Serializable
+data object SplashRoute
 @Serializable
 data object WelcomeRoute
 
@@ -23,6 +26,12 @@ fun NavGraphBuilder.authGraph(
     navController: NavController,
     onAuthSuccess: () -> Unit
 ) {
+    composable<SplashRoute> {
+        SplashScreen(
+            navController = navController,
+            firebaseAuth = FirebaseAuth.getInstance()
+        )
+    }
 
     composable<WelcomeRoute> {
         WelcomeScreen(

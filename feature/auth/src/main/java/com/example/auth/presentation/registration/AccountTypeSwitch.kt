@@ -89,7 +89,7 @@ private fun SegmentText(
         modifier = modifier
             .clip(RoundedCornerShape(100))
             .clickable(onClick = onClick)
-            .fillMaxHeight(), // ✅ align touch area with parent height
+            .fillMaxHeight(),
         contentAlignment = Alignment.Center
     ) {
         Text(text = text, color = color)

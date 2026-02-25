@@ -49,7 +49,6 @@ fun ReelItem(
     val author = reelWithAuthor.author
 
     Box(modifier = modifier.fillMaxSize()) {
-        // Video player or placeholder
         if (reel.videoUrl.isNotEmpty() && reel.videoUrl.startsWith("http")) {
             VideoPlayer(
                 videoUrl = reel.videoUrl,
@@ -67,7 +66,6 @@ fun ReelItem(
             )
         }
 
-        // Gradient overlay at bottom
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -83,19 +81,16 @@ fun ReelItem(
                 )
         )
 
-        // Content overlay
         Row(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .fillMaxWidth()
                 .padding(Padding.padding16)
         ) {
-            // Left side: Author info and caption
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(VerticalSpacing.s8)
             ) {
-                // Author info
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(Padding.padding8)
@@ -116,7 +111,6 @@ fun ReelItem(
                     )
                 }
 
-                // Caption
                 Text(
                     text = reel.caption,
                     color = Color.White,
@@ -124,7 +118,6 @@ fun ReelItem(
                     maxLines = 3
                 )
 
-                // Hashtags
                 if (reel.hashtags.isNotEmpty()) {
                     Text(
                         text = reel.hashtags.joinToString(" ") { "#$it" },
@@ -135,13 +128,11 @@ fun ReelItem(
                 }
             }
 
-            // Right side: Action buttons
             Column(
                 modifier = Modifier.padding(start = Padding.padding16),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(VerticalSpacing.s16)
             ) {
-                // Like button
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(VerticalSpacing.s4)
@@ -161,7 +152,6 @@ fun ReelItem(
                     )
                 }
 
-                // Comment button
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(VerticalSpacing.s4)
@@ -181,7 +171,6 @@ fun ReelItem(
                     )
                 }
 
-                // Share button
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = "Share",
